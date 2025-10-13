@@ -1,0 +1,44 @@
+body {
+    background-color: #fff5f5;
+    background-image: 
+        linear-gradient(to right, transparent 50%, rgba(255, 182, 193, 0.2) 50%),
+        linear-gradient(to bottom, transparent 50%, rgba(255, 182, 193, 0.2) 50%);
+    background-size: 40px 40px;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(255, 75, 110, 0.1);
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.stat-card, .requests-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 75, 110, 0.1);
+}
+
+.request-card {
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(255, 75, 110, 0.1);
+    box-shadow: 0 2px 8px rgba(255, 75, 110, 0.05);
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 75, 110, 0.1);
+}
+
+.preview-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 75, 110, 0.1);
+} 

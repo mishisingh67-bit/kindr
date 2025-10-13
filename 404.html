@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - Kindr</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #ff4b6e;
+            margin: 0;
+            line-height: 1;
+        }
+        .error-message {
+            font-size: 2rem;
+            color: #333;
+            margin: 1rem 0 2rem;
+        }
+        .error-description {
+            color: #666;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        .back-button {
+            background-color: #ff4b6e;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 75, 110, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-message">Page Not Found</h2>
+        <p class="error-description">
+            We couldn't find the page you're looking for. It might have been moved, deleted, or never existed.
+        </p>
+        <a href="/" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html> 

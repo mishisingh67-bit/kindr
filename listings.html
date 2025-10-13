@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kindr - Contribution Listings</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="listings-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>Kindr</span>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search contributions...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-links">
+                <button class="filter-button">
+                    <i class="fas fa-filter"></i>
+                    Filter
+                </button>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?name=User&background=ff4b6e&color=fff" alt="User" class="avatar">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="filter-panel">
+        <div class="filter-section">
+            <h3>Categories</h3>
+            <div class="filter-options">
+                <label><input type="checkbox" value="education"> Education</label>
+                <label><input type="checkbox" value="medical"> Medical</label>
+                <label><input type="checkbox" value="food"> Food</label>
+                <label><input type="checkbox" value="shelter"> Shelter</label>
+                <label><input type="checkbox" value="clothing"> Clothing</label>
+            </div>
+        </div>
+        <div class="filter-section">
+            <h3>Location</h3>
+            <select>
+                <option value="">All Locations</option>
+                <option value="nearby">Nearby</option>
+                <option value="worldwide">Worldwide</option>
+            </select>
+        </div>
+        <div class="filter-section">
+            <h3>Amount Range</h3>
+            <div class="range-inputs">
+                <input type="number" placeholder="Min" min="0">
+                <span>to</span>
+                <input type="number" placeholder="Max" min="0">
+            </div>
+        </div>
+        <button class="apply-filters">Apply Filters</button>
+    </div>
+
+    <main class="listings-container">
+        <div class="listings-header">
+            <h1>Contribution Requests</h1>
+            <div class="sort-options">
+                <select>
+                    <option value="recent">Most Recent</option>
+                    <option value="urgent">Most Urgent</option>
+                    <option value="amount">Amount: Low to High</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="listings-grid">
+            <!-- Sample listings -->
+            <div class="listing-card">
+                <div class="listing-image">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6" alt="Education Support">
+                    <span class="category education">Education</span>
+                </div>
+                <div class="listing-content">
+                    <h3>College Tuition Support</h3>
+                    <p class="description">Help me complete my final year of medical school. Your support will help me serve others.</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%"></div>
+                    </div>
+                    <div class="listing-stats">
+                        <div class="stat">
+                            <span class="amount">$15,000</span>
+                            <span class="label">needed</span>
+                        </div>
+                        <div class="stat">
+                            <span class="amount">75%</span>
+                            <span class="label">funded</span>
+                        </div>
+                        <div class="stat">
+                            <span class="amount">30</span>
+                            <span class="label">days left</span>
+                        </div>
+                    </div>
+                    <button class="contribute-button">Contribute Now</button>
+                </div>
+            </div>
+
+            <div class="listing-card">
+                <div class="listing-image">
+                    <img src="https://images.unsplash.com/photo-1504813184591-01572f98c85f" alt="Medical Support">
+                    <span class="category medical">Medical</span>
+                </div>
+                <div class="listing-content">
+                    <h3>Emergency Surgery Fund</h3>
+                    <p class="description">Need support for life-saving heart surgery. Every contribution matters.</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 45%"></div>
+                    </div>
+                    <div class="listing-stats">
+                        <div class="stat">
+                            <span class="amount">$25,000</span>
+                            <span class="label">needed</span>
+                        </div>
+                        <div class="stat">
+                            <span class="amount">45%</span>
+                            <span class="label">funded</span>
+                        </div>
+                        <div class="stat">
+                            <span class="amount">15</span>
+                            <span class="label">days left</span>
+                        </div>
+                    </div>
+                    <button class="contribute-button">Contribute Now</button>
+                </div>
+            </div>
+
+            <div class="listing-card">
+                <div class="listing-image">
+                    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d" alt="Food Support">
+                    <span class="category food">Food</span>
+                </div>
+                <div class="listing-content">
+                    <h3>Community Food Drive</h3>
+                    <p class="description">Help us provide meals to 100 families in need this month.</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 90%"></div>
+                    </div>
+                    <div class="listing-stats">
+                        <div class="stat">
+                            <span class="amount">$5,000</span>
+                            <span class="label">needed</span>
+                        </div>
+                        <div class="stat">
+                            <span class="amount">90%</span>
+                            <span class="label">funded</span>
+                        </div>
+                        <div class="stat">
+                            <span class="amount">5</span>
+                            <span class="label">days left</span>
+                        </div>
+                    </div>
+                    <button class="contribute-button">Contribute Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="load-more">
+            <button>Load More</button>
+        </div>
+    </main>
+
+    <script src="listings.js"></script>
+</body>
+</html> 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kindr - Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    <span>Kindr</span>
+                </div>
+                <h2>Create Account</h2>
+                <p>Join our community and make a difference</p>
+            </div>
+
+            <!-- Step 1: Role Selection -->
+            <div id="step-role" class="form-step active">
+                <h3>I want to...</h3>
+                <div class="role-selector">
+                    <div class="role-option" data-role="donor">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <span>Help Others</span>
+                        <p class="role-description">Become a donor and support those in need</p>
+                    </div>
+                    <div class="role-option" data-role="recipient">
+                        <i class="fas fa-hands-receiving"></i>
+                        <span>Get Support</span>
+                        <p class="role-description">Connect with generous donors who want to help</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Name -->
+            <div id="step-name" class="form-step">
+                <div class="step-header">
+                    <button class="back-button" data-step="role">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3>Your Name</h3>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                </div>
+                <button type="button" class="auth-button next-button" data-next="contact">Continue</button>
+            </div>
+
+            <!-- Step 3: Contact -->
+            <div id="step-contact" class="form-step">
+                <div class="step-header">
+                    <button class="back-button" data-step="name">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3>Contact Information</h3>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <button type="button" class="auth-button next-button" data-next="password">Continue</button>
+            </div>
+
+            <!-- Step 4: Password -->
+            <div id="step-password" class="form-step">
+                <div class="step-header">
+                    <button class="back-button" data-step="contact">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h3>Create Password</h3>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <div class="form-group terms">
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                    </label>
+                </div>
+                <button type="submit" class="auth-button">Create Account</button>
+            </div>
+
+            <div class="social-auth">
+                <p>Or sign up with</p>
+                <div class="social-buttons">
+                    <button class="social-button google">
+                        <i class="fab fa-google"></i>
+                        <span>Google</span>
+                    </button>
+                    <button class="social-button facebook">
+                        <i class="fab fa-facebook-f"></i>
+                        <span>Facebook</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html> 

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kindr - Swipe Interface</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="swipe-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>Kindr</span>
+            </div>
+            <div class="nav-links">
+                <a href="listings.html" class="view-list-button">
+                    <i class="fas fa-th-list"></i>
+                    View List
+                </a>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?name=User&background=ff4b6e&color=fff" alt="User" class="avatar">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="stats-bar">
+            <div class="stat">
+                <i class="fas fa-heart"></i>
+                <span>2,345 Contributions</span>
+            </div>
+            <div class="stat">
+                <i class="fas fa-users"></i>
+                <span>1,234 Donors</span>
+            </div>
+            <div class="stat">
+                <i class="fas fa-hand-holding-heart"></i>
+                <span>$123,456 Raised</span>
+            </div>
+        </div>
+
+        <div class="quick-filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Education</button>
+            <button class="filter-btn">Medical</button>
+            <button class="filter-btn">Food</button>
+            <button class="filter-btn">Shelter</button>
+            <button class="filter-btn">Clothing</button>
+        </div>
+
+        <div class="card-stack">
+            <div class="card">
+                <div class="verification-badge">
+                    <i class="fas fa-check-circle"></i>
+                    Verified
+                </div>
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6" alt="Education Support">
+                </div>
+                <div class="card-content">
+                    <h2>College Tuition Support</h2>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>New York, USA</span>
+                        <span class="distance">2.5 miles away</span>
+                    </div>
+                    <p class="description">Help me complete my final year of medical school. Your support will help me serve others in need.</p>
+                    <div class="tags">
+                        <span class="tag urgent">Urgent</span>
+                        <span class="tag">Education</span>
+                        <span class="tag">Healthcare</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%"></div>
+                    </div>
+                    <span class="progress-text">$15,000 needed • 75% funded • 30 days left</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="swipe-buttons">
+            <button class="swipe-button decline">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="swipe-button info">
+                <i class="fas fa-info"></i>
+            </button>
+            <button class="swipe-button accept">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-times close-modal"></i>
+            <h2>College Tuition Support</h2>
+            <div class="modal-body">
+                <div class="story">
+                    <h3>My Story</h3>
+                    <p>I'm in my final year of medical school, passionate about becoming a doctor to serve underprivileged communities. The rising costs of education have made it challenging to complete my degree. Your support will help me achieve this dream and give back to society.</p>
+                </div>
+                <div class="verification-details">
+                    <h3>Verification Details</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Identity verified</li>
+                        <li><i class="fas fa-check-circle"></i> Education documents verified</li>
+                        <li><i class="fas fa-check-circle"></i> Financial need confirmed</li>
+                    </ul>
+                </div>
+                <h3>Choose Amount</h3>
+                <div class="donation-buttons">
+                    <button class="donate-btn">$10</button>
+                    <button class="donate-btn">$25</button>
+                    <button class="donate-btn">$50</button>
+                    <button class="donate-btn">$100</button>
+                    <button class="donate-btn">$500</button>
+                    <button class="donate-btn">Custom</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="swipe.js"></script>
+</body>
+</html> 
