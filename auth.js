@@ -1,19 +1,23 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Form steps
+document.addEventListener('DOMContentLoaded', function () {
+    // ✅ Grab the main form element
+    const form = document.querySelector('form');
+    if (!form) return; // stop if there's no form (e.g., on other pages)
+
+    // ✅ Detect form type
+    const isLoginForm = form.id === 'loginForm';
+
+    // ✅ Define form steps (used only in signup)
     const formSteps = {
         role: document.getElementById('step-role'),
         name: document.getElementById('step-name'),
         contact: document.getElementById('step-contact'),
         password: document.getElementById('step-password')
     };
-    
+
     let currentStep = 'role';
     let selectedRole = null;
 
-    // Check if it's login form
-    const isLoginForm = document.querySelector('form').id === 'loginForm';
-
-    // Role selection
+    // ✅ Handle role selection (works for both login & signup)
     const roleOptions = document.querySelectorAll('.role-option');
     roleOptions.forEach(option => {
         option.addEventListener('click', () => {
@@ -23,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Back buttons
+    // ✅ Handle navigation between steps (signup only)
     const backButtons = document.querySelectorAll('.back-button');
     backButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -32,32 +36,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Next buttons
     const nextButtons = document.querySelectorAll('.next-button');
     nextButtons.forEach(button => {
         button.addEventListener('click', () => {
             const nextStep = button.dataset.next;
-            if (validateCurrentStep()) {
-                goToStep(nextStep);
-            }
+            if (validateCurrentStep()) goToStep(nextStep);
         });
     });
 
     function goToStep(step, direction = 'forward') {
-        // Hide current step
+        if (!formSteps[currentStep] || !formSteps[step]) return;
         formSteps[currentStep].classList.remove('active');
-        
-        // Show new step
         formSteps[step].classList.remove('slide-in-right', 'slide-in-left');
-        void formSteps[step].offsetWidth; // Trigger reflow
+        void formSteps[step].offsetWidth; // trigger reflow
         formSteps[step].classList.add('active');
         formSteps[step].classList.add(direction === 'forward' ? 'slide-in-right' : 'slide-in-left');
-        
         currentStep = step;
     }
 
     function validateCurrentStep() {
-        const inputs = formSteps[currentStep].querySelectorAll('input[required]');
+        const inputs = formSteps[currentStep]?.querySelectorAll('input[required]') || [];
         let isValid = true;
 
         inputs.forEach(input => {
@@ -70,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentStep === 'password') {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            
             if (password !== confirmPassword) {
                 showError('Passwords do not match');
                 isValid = false;
@@ -80,9 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return isValid;
     }
 
-    // Password visibility toggle
-    const togglePasswordButtons = document.querySelectorAll('.toggle-password');
-    togglePasswordButtons.forEach(button => {
+    // ✅ Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
         button.addEventListener('click', () => {
             const input = button.previousElementSibling;
             const type = input.type === 'password' ? 'text' : 'password';
@@ -92,66 +88,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Form submission
-    const form = document.querySelector('form');
+    // ✅ Handle form submission (login or signup)
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (!selectedRole && !isLoginForm) {
+        if (!isLoginForm && !selectedRole) {
             showError('Please select your role first');
             return;
         }
 
         const formData = {
             role: selectedRole,
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value
+            email: document.getElementById('email')?.value,
+            password: document.getElementById('password')?.value
         };
 
         if (!isLoginForm) {
-            // Add signup-specific fields
             formData.firstName = document.getElementById('firstName')?.value;
             formData.lastName = document.getElementById('lastName')?.value;
             formData.phone = document.getElementById('phone')?.value;
         }
 
         try {
-            // Simulate API call
             await simulateAuth(formData);
-            
-            // Get user role (use selected role for signup, or get from form data for login)
-            const userRole = selectedRole || formData.role || 'donor';
-            
-            // Store auth state
+
+            // ✅ Store login/signup data
             localStorage.setItem('auth', JSON.stringify({
                 isAuthenticated: true,
                 user: {
-                    role: userRole,
+                    role: formData.role || 'donor',
                     firstName: formData.firstName || 'User',
                     email: formData.email
                 }
             }));
-            
-            // Show success message
-            const message = isLoginForm 
+
+            // ✅ Save user in local storage (for demo persistence)
+            if (!isLoginForm) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                users.push(formData);
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            // ✅ Show success and redirect
+            const message = isLoginForm
                 ? 'Login successful! Redirecting...'
                 : 'Account created successfully! Redirecting...';
             showSuccess(message);
-            
-            // Redirect based on user role
+
+            const role = formData.role || 'donor';
             setTimeout(() => {
-                window.location.href = userRole === 'donor' ? '/donor-dashboard.html' : '/recipient-dashboard.html';
+                window.location.href = role === 'donor'
+                    ? 'donor-dashboard.html'
+                    : 'recipient-dashboard.html';
             }, 2000);
+
         } catch (error) {
             showError(error.message);
         }
     });
 
-    // Social auth buttons
-    const socialButtons = document.querySelectorAll('.social-button');
-    socialButtons.forEach(button => {
+    // ✅ Simulate backend authentication
+    async function simulateAuth(data) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (data.email && data.password) resolve({ success: true });
+                else reject(new Error('Please fill out all required fields.'));
+            }, 1000);
+        });
+    }
+
+    // ✅ Social sign-in (Google/Facebook)
+    document.querySelectorAll('.social-button').forEach(button => {
         button.addEventListener('click', () => {
-            if (!selectedRole && !isLoginForm) {
+            if (!isLoginForm && !selectedRole) {
                 showError('Please select your role first');
                 return;
             }
@@ -160,64 +169,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Error handling
-    function showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        
-        const existingError = document.querySelector('.error-message');
-        if (existingError) {
-            existingError.remove();
-        }
-        
-        const form = document.querySelector('form');
-        form.insertBefore(errorDiv, form.firstChild);
-        
-        setTimeout(() => {
-            errorDiv.remove();
-        }, 3000);
-    }
-
-    // Success message handling
-    function showSuccess(message) {
-        const successDiv = document.createElement('div');
-        successDiv.className = 'success-message';
-        successDiv.textContent = message;
-        
-        const existingSuccess = document.querySelector('.success-message');
-        if (existingSuccess) {
-            existingSuccess.remove();
-        }
-        
-        const form = document.querySelector('form');
-        form.insertBefore(successDiv, form.firstChild);
-    }
-
-    // Simulate authentication API call
-    async function simulateAuth(data) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (data.email && data.password) {
-                    // For demo purposes, accept any non-empty email/password
-                    resolve({ success: true });
-                } else {
-                    reject(new Error('Please enter both email and password'));
-                }
-            }, 1000);
-        });
-    }
-
-    // Handle social authentication
     async function handleSocialAuth(provider) {
         try {
-            // Simulate social auth
             await simulateAuth({ email: 'social@example.com', password: 'dummy' });
-            
-            // Get user role
             const userRole = selectedRole || 'donor';
-            
-            // Store auth state
             localStorage.setItem('auth', JSON.stringify({
                 isAuthenticated: true,
                 user: {
@@ -226,31 +181,49 @@ document.addEventListener('DOMContentLoaded', function() {
                     email: 'social@example.com'
                 }
             }));
-            
             showSuccess(`${provider} authentication successful! Redirecting...`);
-            
-            // Redirect based on user role
             setTimeout(() => {
-                window.location.href = userRole === 'donor' ? '/donor-dashboard.html' : '/recipient-dashboard.html';
+                window.location.href = userRole === 'donor'
+                    ? 'donor-dashboard.html'
+                    : 'recipient-dashboard.html';
             }, 2000);
-        } catch (error) {
+        } catch {
             showError(`${provider} authentication failed`);
         }
     }
 
-    // Check URL parameters for pre-selected role
-    const urlParams = new URLSearchParams(window.location.search);
-    const roleParam = urlParams.get('role');
+    // ✅ Helper UI message functions
+    function showError(message) {
+        const existing = document.querySelector('.error-message');
+        if (existing) existing.remove();
+        const div = document.createElement('div');
+        div.className = 'error-message';
+        div.textContent = message;
+        form.insertBefore(div, form.firstChild);
+        setTimeout(() => div.remove(), 3000);
+    }
+
+    function showSuccess(message) {
+        const existing = document.querySelector('.success-message');
+        if (existing) existing.remove();
+        const div = document.createElement('div');
+        div.className = 'success-message';
+        div.textContent = message;
+        form.insertBefore(div, form.firstChild);
+    }
+
+    // ✅ Preselect role from URL (?role=donor)
+    const roleParam = new URLSearchParams(window.location.search).get('role');
     if (roleParam) {
-        const roleOption = document.querySelector(`[data-role="${roleParam}"]`);
-        if (roleOption) {
+        const option = document.querySelector(`[data-role="${roleParam}"]`);
+        if (option) {
             selectedRole = roleParam;
             roleOptions.forEach(opt => opt.classList.remove('active'));
-            roleOption.classList.add('active');
+            option.classList.add('active');
         }
     }
 
-    // Add CSS for messages
+    // ✅ Inline CSS for notifications
     const style = document.createElement('style');
     style.textContent = `
         .error-message {
@@ -262,7 +235,6 @@ document.addEventListener('DOMContentLoaded', function() {
             text-align: center;
             animation: slideDown 0.3s ease;
         }
-
         .success-message {
             background-color: #e8fff0;
             color: #4bff91;
@@ -272,17 +244,10 @@ document.addEventListener('DOMContentLoaded', function() {
             text-align: center;
             animation: slideDown 0.3s ease;
         }
-
         @keyframes slideDown {
-            from {
-                transform: translateY(-10px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     `;
     document.head.appendChild(style);
-}); 
+});

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="auth-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+
         :root {
             --primary-color: #ff4b6e;
             --success-color: #4bff91;
@@ -15,12 +16,23 @@
             --card-radius: 16px;
             --transition: all 0.3s ease;
         }
+        html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: url("download.png") no-repeat center center fixed;
+  background-size: cover;
+}
 
         .dashboard-container {
-            max-width: 1200px;
+            
+            
             margin: 2rem auto;
             padding: 0 1rem;
         }
+        
 
         .dashboard-header {
             display: flex;
@@ -189,6 +201,71 @@
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(4px);
         }
+        .active-request-card {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+
+.active-request-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+.active-request-image {
+  flex: 1.2;
+  overflow: hidden;
+}
+
+.active-request-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-right: 3px solid var(--primary-color);
+}
+
+.active-request-content {
+  flex: 0.8;
+  background: #fff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 4px solid var(--primary-color, #ff4b6e);
+}
+
+.active-request-content h3 {
+  margin: 0 0 0.5rem;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+active-request-content p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.view-link {
+  text-decoration: none;
+  color: var(--primary-color, #ff4b6e);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.view-link:hover {
+  color: #e03b5e;
+}
+
 
         .status-urgent {
             color: var(--primary-color);
@@ -384,18 +461,174 @@
             .request-card {
                 max-width: 100%;
             }
+            
         }
+        /* Floating user dropdown */
+.user-menu {
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.dropdown-toggle:hover {
+  color: var(--primary-color);
+}
+
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color);
+}
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  display: none;
+  min-width: 190px;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
+  background: white;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: #f9f9f9;
+  color: var(--primary-color);
+}
+
+.dropdown-item.logout {
+  color: var(--primary-color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .user-menu {
+    margin-top: 1rem;
+  }
+
+  .dropdown-toggle span {
+    display: none;
+  }
+}
+
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">Kindr</div>
-        <div class="nav-links">
-            <a href="/swipe.html" class="nav-link">Browse Requests</a>
-            <a href="/donor-dashboard.html" class="nav-link active">Dashboard</a>
-            <button id="logoutBtn" class="nav-link">Logout</button>
-        </div>
-    </nav>
+  <div class="nav-left">
+    <div class="nav-brand">
+  <i class="fas fa-heart" style="color: var(--primary-color); margin-right: 8px;"></i>
+  Kindr
+</div>
+    <div class="nav-links">
+      <a href="swipe.html" class="nav-link">Browse Requests</a>
+      <a href="donor-dashboard.html" class="nav-link active">Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Floating Profile Dropdown (aligned to right) -->
+  <div class="dropdown user-menu">
+    <button class="dropdown-toggle" id="profileMenuBtn">
+      <img src="" alt="User Avatar" class="nav-avatar" id="navAvatar">
+      <span id="navUserName">User</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+      <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+      <button id="logoutBtn" class="dropdown-item logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+
+
+</nav>
+
 
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -433,26 +666,32 @@
         </div>
 
         <div class="requests-section">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="fas fa-fire"></i>
-                    Active Requests
-                </h2>
-            </div>
-            <div class="requests-grid" id="activeRequests">
-                <!-- Active requests will be populated here -->
-            </div>
-            <div class="swipe-hint">
-                <span class="skip">
-                    <i class="fas fa-times-circle"></i>
-                    Swipe left to skip
-                </span>
-                <span class="help">
-                    <i class="fas fa-check-circle"></i>
-                    Swipe right to help
-                </span>
-            </div>
-        </div>
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-fire"></i>
+      Active Requests
+    </h2>
+  </div>
+
+  <div class="requests-grid" id="activeRequests">
+    <!-- Active requests will be populated here -->
+    
+    <!-- Example Active Request Preview -->
+    <div class="active-request-card">
+        <div class="active-request-image">
+      <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d" alt="Food Drive" class="active-request-img">
+      </div>
+      <div class="active-request-content">
+        <h3>Community Food Drive</h3>
+        <p>Help provide meals to families in need this month.</p>
+        <a href="listings.html?id=3" class="view-link">
+          View Full Listing <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         <div class="requests-section">
             <div class="section-header">
@@ -477,259 +716,64 @@
         </div>
     </div>
 
-    <script>
-        // Check authentication and role
-        const auth = JSON.parse(localStorage.getItem('auth') || '{}');
-        if (!auth.isAuthenticated || auth.user?.role !== 'donor') {
-            window.location.href = '/login.html';
-        }
+    
 
-        // Update user info
-        const userName = document.getElementById('userName');
-        const userAvatar = document.getElementById('userAvatar');
-        userName.textContent = auth.user?.firstName || 'User';
-        userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(auth.user?.firstName || 'User')}&background=ff4b6e&color=fff&size=200`;
+         
+    
+   
 
-        // Logout functionality
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('auth');
-            window.location.href = '/';
-        });
 
-        // Sample data - Replace with actual API calls
-        const activeRequests = [
-            {
-                id: 1,
-                title: "School Supplies for Children",
-                requester: "Priya Mehta",
-                requesterAvatar: "https://ui-avatars.com/api/?name=Priya+Mehta&background=4bff91&color=fff",
-                location: "Dharavi, Mumbai",
-                status: "urgent",
-                date: "2025-05-20",
-                image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6",
-                description: "Help provide essential school supplies for underprivileged children in Mumbai's largest community.",
-                goal: 50000,
-                raised: 35000,
-                tags: ["Education", "Children", "Urgent"]
-            },
-            {
-                id: 2,
-                title: "Food Distribution Drive",
-                requester: "Rajesh Sharma",
-                requesterAvatar: "https://ui-avatars.com/api/?name=Rajesh+Sharma&background=ffb84b&color=fff",
-                location: "Seelampur, Delhi",
-                status: "active",
-                date: "2025-05-19",
-                image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c",
-                description: "Support families affected by food insecurity in Delhi's urban communities.",
-                goal: 75000,
-                raised: 45000,
-                tags: ["Food", "Emergency", "Families"]
-            },
-            {
-                id: 3,
-                title: "Rural Education Project",
-                requester: "Anjali Singh",
-                requesterAvatar: "https://ui-avatars.com/api/?name=Anjali+Singh&background=4b91ff&color=fff",
-                location: "Tumkur, Karnataka",
-                status: "active",
-                date: "2025-05-18",
-                image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b",
-                description: "Help fund educational programs for rural students in Karnataka villages.",
-                goal: 100000,
-                raised: 65000,
-                tags: ["Education", "Rural", "Students"]
-            }
-        ];
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdownBtn = document.getElementById('profileMenuBtn');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const navUserName = document.getElementById('navUserName');
+  const navAvatar = document.getElementById('navAvatar');
+  const userName = document.getElementById('userName');
+  const userAvatar = document.getElementById('userAvatar');
 
-        const donationHistory = [
-            {
-                id: 4,
-                title: "Winter Relief Campaign",
-                requester: "Manav Seva Foundation",
-                requesterAvatar: "https://ui-avatars.com/api/?name=Manav+Seva&background=ff4b6e&color=fff",
-                location: "Leh, Ladakh",
-                status: "completed",
-                date: "2025-05-15",
-                image: "https://images.unsplash.com/photo-1515168833906-d503a853412f",
-                description: "Provided warm clothing and shelter supplies to families in high-altitude regions.",
-                goal: 120000,
-                raised: 120000,
-                tags: ["Clothing", "Winter", "Completed"]
-            },
-            {
-                id: 5,
-                title: "Medical Camp Support",
-                requester: "Dr. Kavita Patel",
-                requesterAvatar: "https://ui-avatars.com/api/?name=Kavita+Patel&background=4bff91&color=fff",
-                location: "Raipur, Chhattisgarh",
-                status: "completed",
-                date: "2025-05-10",
-                image: "https://images.unsplash.com/photo-1584515933487-779824d29309",
-                description: "Supported rural medical camp with essential healthcare supplies and medicines.",
-                goal: 200000,
-                raised: 200000,
-                tags: ["Medical", "Healthcare", "Completed"]
-            },
-            {
-                id: 6,
-                title: "Digital Learning Initiative",
-                requester: "Vidya Foundation",
-                requesterAvatar: "https://ui-avatars.com/api/?name=Vidya+Foundation&background=ffb84b&color=fff",
-                location: "Alwar, Rajasthan",
-                status: "completed",
-                date: "2025-05-05",
-                image: "https://images.unsplash.com/photo-1516534775068-ba3e7458af70",
-                description: "Established digital learning centers in rural government schools.",
-                goal: 150000,
-                raised: 150000,
-                tags: ["Education", "Technology", "Completed"]
-            }
-        ];
+  // Retrieve user from localStorage
+  const auth = JSON.parse(localStorage.getItem('auth') || '{}');
 
-        // Swipe functionality
-        function setupSwipeCards(requests, containerId) {
-            const container = document.getElementById(containerId);
-            let currentIndex = 0;
-            let startX = 0;
-            let currentX = 0;
-            let isDragging = false;
+  // Redirect if unauthenticated or wrong role
+  if (!auth.isAuthenticated || !auth.user || auth.user.role !== 'donor') {
+    window.location.href = 'login.html';
+    return;
+  }
 
-            function renderCurrentCard() {
-                if (!requests[currentIndex]) return;
-                
-                const request = requests[currentIndex];
-                const progress = (request.raised / request.goal) * 100;
-                
-                container.innerHTML = `
-                    <div class="request-card" style="z-index: 1">
-                        <div class="swipe-indicator skip">
-                            <i class="fas fa-times-circle"></i>
-                        </div>
-                        <div class="swipe-indicator help">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="swipe-overlay skip"></div>
-                        <div class="swipe-overlay help"></div>
-                        <div class="request-image">
-                            <img src="${request.image}" alt="${request.title}">
-                            <div class="image-overlay">
-                                <h3 class="request-title">${request.title}</h3>
-                                <div class="location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>${request.location}</span>
-                                </div>
-                            </div>
-                            <span class="request-status status-${request.status}">
-                                ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
-                            </span>
-                        </div>
-                        <div class="request-content">
-                            <div class="tags">
-                                ${request.tags.map(tag => `
-                                    <span class="tag ${tag.toLowerCase() === 'urgent' ? 'urgent' : ''}">${tag}</span>
-                                `).join('')}
-                            </div>
-                            <p>${request.description}</p>
-                            <div class="progress-container">
-                                <div class="progress-header">
-                                    <span>₹${request.raised.toLocaleString('en-IN')} raised</span>
-                                    <span>of ₹${request.goal.toLocaleString('en-IN')}</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress" style="width: ${progress}%"></div>
-                                </div>
-                            </div>
-                            <div class="requester">
-                                <img src="${request.requesterAvatar}" alt="${request.requester}" class="requester-avatar">
-                                <div class="requester-info">
-                                    <div class="requester-name">${request.requester}</div>
-                                    <div class="request-date">${request.date}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+  // ✅ Update both navbar and header with user info
+  const displayName = auth.user.firstName || 'User';
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=ff4b6e&color=fff`;
 
-                const card = container.querySelector('.request-card');
-                setupCardEvents(card);
-            }
+  navUserName.textContent = displayName;
+  navAvatar.src = avatarUrl;
+  userName.textContent = displayName;
+  userAvatar.src = avatarUrl;
 
-            function setupCardEvents(card) {
-                const skipIndicator = card.querySelector('.swipe-indicator.skip');
-                const helpIndicator = card.querySelector('.swipe-indicator.help');
-                const skipOverlay = card.querySelector('.swipe-overlay.skip');
-                const helpOverlay = card.querySelector('.swipe-overlay.help');
+  // ✅ Dropdown toggle
+  dropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
 
-                function handleStart(e) {
-                    startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-                    isDragging = true;
-                    card.classList.add('swiping');
-                }
+  // Close dropdown when clicking outside
+  document.addEventListener('click', () => {
+    dropdownMenu.classList.remove('show');
+  });
 
-                function handleMove(e) {
-                    if (!isDragging) return;
-                    e.preventDefault();
-                    currentX = (e.type === 'mousemove' ? e.clientX : e.touches[0].clientX) - startX;
-                    card.style.transform = `translateX(${currentX}px) translateX(-50%) rotate(${currentX * 0.03}deg)`;
+  // Prevent close when clicking inside dropdown
+  dropdownMenu.addEventListener('click', (e) => e.stopPropagation());
 
-                    const progress = Math.min(Math.abs(currentX) / (window.innerWidth * 0.15), 1);
-                    if (currentX > 0) {
-                        helpIndicator.style.opacity = progress;
-                        helpOverlay.style.opacity = progress * 0.4;
-                        skipIndicator.style.opacity = 0;
-                        skipOverlay.style.opacity = 0;
-                    } else if (currentX < 0) {
-                        skipIndicator.style.opacity = progress;
-                        skipOverlay.style.opacity = progress * 0.4;
-                        helpIndicator.style.opacity = 0;
-                        helpOverlay.style.opacity = 0;
-                    }
-                }
+  // ✅ Logout functionality
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('auth');
+    window.location.href = 'index.html'; // redirect to homepage
+  });
+});
+</script>
 
-                function handleEnd() {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    card.classList.remove('swiping');
 
-                    const threshold = window.innerWidth * 0.15;
-                    if (Math.abs(currentX) > threshold) {
-                        if (currentX > 0) {
-                            // Swipe right - Help
-                            if (currentIndex < requests.length - 1) {
-                                currentIndex++;
-                            }
-                        } else {
-                            // Swipe left - Skip
-                            if (currentIndex < requests.length - 1) {
-                                currentIndex++;
-                            }
-                        }
-                    }
-
-                    // Reset indicators
-                    skipIndicator.style.opacity = 0;
-                    helpIndicator.style.opacity = 0;
-                    skipOverlay.style.opacity = 0;
-                    helpOverlay.style.opacity = 0;
-
-                    renderCurrentCard();
-                }
-
-                card.addEventListener('mousedown', handleStart);
-                card.addEventListener('touchstart', handleStart);
-                document.addEventListener('mousemove', handleMove);
-                document.addEventListener('touchmove', handleMove);
-                document.addEventListener('mouseup', handleEnd);
-                document.addEventListener('touchend', handleEnd);
-            }
-
-            renderCurrentCard();
-        }
-
-        // Initialize swipe cards
-        setupSwipeCards(activeRequests, 'activeRequests');
-        setupSwipeCards(donationHistory, 'donationHistory');
-    </script>
 </body>
 </html> 

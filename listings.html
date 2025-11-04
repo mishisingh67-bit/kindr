@@ -77,7 +77,7 @@
 
         <div class="listings-grid">
             <!-- Sample listings -->
-            <div class="listing-card">
+            <div class="listing-card" data-id="1">
                 <div class="listing-image">
                     <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6" alt="Education Support">
                     <span class="category education">Education</span>
@@ -106,7 +106,7 @@
                 </div>
             </div>
 
-            <div class="listing-card">
+            <div class="listing-card" data-id="2">
                 <div class="listing-image">
                     <img src="https://images.unsplash.com/photo-1504813184591-01572f98c85f" alt="Medical Support">
                     <span class="category medical">Medical</span>
@@ -135,9 +135,9 @@
                 </div>
             </div>
 
-            <div class="listing-card">
+            <div class="listing-card" data-id="3">
                 <div class="listing-image">
-                    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d" alt="Food Support">
+                    <img src="https://dc-cdn.s3-ap-southeast-1.amazonaws.com/dc-Cover-j1lk16fsjbntg22n6rpmv602b6-20160201064516.Medi.png" alt="Food Support">
                     <span class="category food">Food</span>
                 </div>
                 <div class="listing-content">
@@ -148,7 +148,7 @@
                     </div>
                     <div class="listing-stats">
                         <div class="stat">
-                            <span class="amount">$5,000</span>
+                            <span class="amount">₹5,000</span>
                             <span class="label">needed</span>
                         </div>
                         <div class="stat">
@@ -171,5 +171,32 @@
     </main>
 
     <script src="listings.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  // 1️⃣ Get the ID from the URL
+  const params = new URLSearchParams(window.location.search);
+  const listingId = params.get("id");
+  if (!listingId) return; // No ID in URL
+
+  // 2️⃣ Wait for the listings to load (if loaded dynamically)
+  setTimeout(() => {
+    const targetCard = document.querySelector(`[data-id="${listingId}"]`);
+
+    if (targetCard) {
+      // Scroll into view smoothly
+      targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      // Highlight the selected card
+      targetCard.classList.add("highlighted");
+
+      // Remove highlight after a short delay (optional)
+      setTimeout(() => {
+        targetCard.classList.remove("highlighted");
+      }, 3000);
+    }
+  }, 500); // slight delay to ensure cards are rendered
+});
+</script>
+
 </body>
 </html> 
