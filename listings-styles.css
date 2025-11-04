@@ -343,6 +343,31 @@
         right: -100%;
     }
 }
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.dashboard-link {
+  text-decoration: none;
+  color: var(--primary-color, #ff4b6e);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 75, 110, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dashboard-link:hover {
+  background: var(--primary-color, #ff4b6e);
+  color: white;
+}
+
 
 /* User dropdown menu */
 .user-dropdown {

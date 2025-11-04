@@ -10,24 +10,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-heart"></i>
-                <span>Kindr</span>
-            </div>
-            <div class="nav-links">
-                <a href="listings.html" class="view-list-button">
-                    <i class="fas fa-th-list"></i>
-                    View List
-                </a>
-                <div class="user-menu">
-                    <img src="https://ui-avatars.com/api/?name=User&background=ff4b6e&color=fff" alt="User" class="avatar">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <nav class="navbar">
+  <div class="nav-left">
+    <div class="logo">
+      <i class="fas fa-heart"></i>
+      <span>Kindr</span>
+    </div>
+
+    <div class="nav-links">
+      <a id="dashboardlink" href="#" class="dashboard-link">
+    <i class="fas fa-tachometer-alt"></i> Dashboard
+  </a>
+      <a href="listings.html" class="view-list-button">
+        <i class="fas fa-th-list"></i> View Listings
+      </a>
+    </div>
+  </div>
+
+  <div class="user-menu">
+    <img
+      src="https://ui-avatars.com/api/?name=User&background=ff4b6e&color=fff"
+      alt="User"
+      class="avatar"
+    />
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</nav>
+
 
     <div class="container">
         <div class="stats-bar">
@@ -41,7 +50,7 @@
             </div>
             <div class="stat">
                 <i class="fas fa-hand-holding-heart"></i>
-                <span>$123,456 Raised</span>
+                <span>123,456 Raised</span>
             </div>
         </div>
 
@@ -128,5 +137,32 @@
     </div>
 
     <script src="swipe.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const dashboardLink = document.getElementById("dashboardLink");
+
+  // Get logged-in user data
+  const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+
+  // If user not logged in → hide dashboard link
+  if (!auth.isAuthenticated || !auth.user) {
+    dashboardlink.style.display = "none";
+    return;
+  }
+
+  // If logged in → show and assign correct redirect
+  dashboardlink.style.display = "inline-flex";
+  dashboardlink.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (auth.user.role === "donor") {
+      window.location.href = "donor-dashboard.html";
+    } else if (auth.user.role === "recipient") {
+      window.location.href = "recipient-dashboard.html";
+    } else {
+      window.location.href = "login.html";
+    }
+  });
+});
+</script>
 </body>
 </html> 
