@@ -1,11 +1,11 @@
 /* Card stack styles */
 .logo-area {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 1.5rem;
 }
 .logo {
-  display: flex;
+  display:inline-flex;
   align-items: center;
   font-size: 1.3rem;
   font-weight: 700;
@@ -16,6 +16,8 @@
 .logo i {
   color: var(--primary-color, #ff4b6e);
   font-size: 1.3rem; /* match text height */
+  
+  display:inline-flex;
 }
 .nav-left {
   display: flex;
@@ -23,23 +25,22 @@
   gap: 1rem;
   flex-shrink: 0;
 }
-.view-list-button {
+.view-list-button {  text-decoration: none;
+  color: var(--primary-color, #ff4b6e);
+  font-weight: 600;
+  font-size: 1rem;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: var(--primary-color, #ff4b6e);
-  color: #fff;
+  background: rgba(255, 75, 110, 0.1);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s ease;
-  font-size: 0.9rem;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .view-list-button:hover {
-  background: #e03b5e;
-  color: #fff;
+  background:var(--primary-color,#ff4b6e);
+  color: white;
 }
 
 .nav-links {
@@ -65,35 +66,14 @@
 
 /* Shared style for both buttons */
 
-.view-list-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.9rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  line-height: 1;
-  white-space: nowrap;
-}
+
 
 /* Dashboard button (filled) */
 
 
 /* View list button (outlined) */
-.view-list-button {
-  background: #fff;
-  color: var(--primary-color, #ff4b6e);
-  border: 1.5px solid var(--primary-color, #ff4b6e);
-}
 
-.view-list-button:hover {
-  background: var(--primary-color, #ff4b6e);
-  color: #fff;
-}
+
 
 /* Avatar alignment fix */
 .user-dropdown {
@@ -124,6 +104,70 @@
     color: var(--text-color);
     margin: 0;
 }
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: none;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 100;
+}
+
+.dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-item {
+  padding: 0.6rem 1rem;
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: background 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(255,75,110,0.1);
+}
+
+.logout {
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
 
 
 .dashboard-link {
@@ -131,7 +175,7 @@
   color: var(--primary-color, #ff4b6e);
   font-weight: 600;
   font-size: 1rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   background: rgba(255, 75, 110, 0.1);
@@ -140,10 +184,15 @@
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-.dashboard-link:hover {
+
+
+.dashboard-link:hover{
+  color: #fff;
   background: var(--primary-color, #ff4b6e);
-  color: white;
 }
+
+
+
 
 
 .user-menu .avatar {

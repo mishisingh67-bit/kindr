@@ -17,24 +17,32 @@
       <span>Kindr</span>
     </div>
 
-    <div class="nav-links">
-      <a id="dashboardlink" href="#" class="dashboard-link">
+      <a id="dashboardLink" href="#" class="dashboard-link">
     <i class="fas fa-tachometer-alt"></i> Dashboard
   </a>
       <a href="listings.html" class="view-list-button">
         <i class="fas fa-th-list"></i> View Listings
       </a>
-    </div>
-  </div>
 
   <div class="user-menu">
-    <img
-      src="https://ui-avatars.com/api/?name=User&background=ff4b6e&color=fff"
-      alt="User"
-      class="avatar"
-    />
-    <i class="fas fa-chevron-down"></i>
-  </div>
+      <button class="dropdown-toggle" id="profileMenuBtn">
+        <img src="" alt="User Avatar" class="nav-avatar" id="navAvatar" />
+        <span id="UserName">User</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+        <button id="logoutBtn" class="dropdown-item logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+    </div>
+  </nav>
+
+  
+  
 </nav>
 
 
@@ -146,13 +154,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // If user not logged in → hide dashboard link
   if (!auth.isAuthenticated || !auth.user) {
-    dashboardlink.style.display = "none";
+    dashboardLink.style.display = "none";
     return;
   }
 
   // If logged in → show and assign correct redirect
-  dashboardlink.style.display = "inline-flex";
-  dashboardlink.addEventListener("click", (e) => {
+  dashboardLink.style.display = "inline-flex";
+  dashboardLink.addEventListener("click", (e) => {
     e.preventDefault();
     if (auth.user.role === "donor") {
       window.location.href = "donor-dashboard.html";
@@ -164,5 +172,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const profileBtn = document.getElementById("profileMenuBtn");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const userName = document.getElementById("UserName");
+  const navAvatar = document.getElementById("navAvatar");
+
+  // Get user info from localStorage
+  const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+
+  // If user is logged in, show their info
+  if (auth.isAuthenticated && auth.user) {
+    const displayName = auth.user.firstName || "User";
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      displayName
+    )}&background=ff4b6e&color=fff`;
+
+    userName.textContent = displayName;
+    navAvatar.src = avatarUrl;
+  } else {
+    // If not logged in, redirect to login
+    window.location.href = "login.html";
+  }
+
+  // Dropdown toggle functionality
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle("show");
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", () => {
+    dropdownMenu.classList.remove("show");
+  });
+
+  // Prevent dropdown close when clicking inside menu
+  dropdownMenu.addEventListener("click", (e) => e.stopPropagation());
+
+  // Logout functionality
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("auth");
+    window.location.href = "index.html";
+  });
+});
+</script>
+
 </body>
 </html> 
