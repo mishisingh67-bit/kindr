@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -137,67 +138,75 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-/* Donation History Section */
-.donation-history {
-  margin: 3rem auto;
-  max-width: 900px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
 
-.donation-history h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--primary-color, #ff4b6e);
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
+    /* Donation History Section */
+    .donation-history {
+      margin: 3rem auto;
+      max-width: 900px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-.donation-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
+    .donation-history h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-color, #ff4b6e);
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
 
-.donation-table th,
-.donation-table td {
-  padding: 0.9rem 1rem;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
+    .donation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
 
-.donation-table th {
-  background: #f9f9f9;
-  font-weight: 600;
-  color: #555;
-}
+    .donation-table th,
+    .donation-table td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
 
-.donation-table tr:hover {
-  background: #fff4f6;
-  transition: background 0.3s ease;
-}
+    .donation-table th {
+      background: #f9f9f9;
+      font-weight: 600;
+      color: #555;
+    }
 
-.status {
-  font-weight: 600;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-}
+    .donation-table tr:hover {
+      background: #fff4f6;
+      transition: background 0.3s ease;
+    }
 
-.status.completed {
-  background-color: #e7f8ef;
-  color: #2e8b57;
-}
+    .status {
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
 
-.status.pending {
-  background-color: #fff4e5;
-  color: #d48806;
-}
+    .status.completed {
+      background-color: #e7f8ef;
+      color: #2e8b57;
+    }
+
+    .status.pending {
+      background-color: #fff4e5;
+      color: #d48806;
+    }
 
     /* Welcome Section */
     .centered-header {
@@ -387,59 +396,21 @@
 
   <div class="requests-section">
     <h2 class="section-title"><i class="fas fa-fire"></i> Active Requests</h2>
-    <div class="active-request-card">
-      <div class="active-request-image">
-        <img src="https://dc-cdn.s3-ap-southeast-1.amazonaws.com/dc-Cover-j1lk16fsjbntg22n6rpmv602b6-20160201064516.Medi.png" alt="Food Drive" />
-      </div>
-      <div class="active-request-content">
-        <h3>Community Food Drive</h3>
-        <p>Help provide meals to families in need this month.</p>
-        <a href="listings.html?id=3" class="view-link">View Full Listing <i class="fas fa-arrow-right"></i></a>
-      </div>
+    <div id="activeRequestsContainer">
+      <!-- Requests will be injected here -->
+      <p style="text-align:center; color:#888;">Loading requests...</p>
     </div>
   </div>
 
   <div class="requests-section">
     <h2 class="section-title"><i class="fas fa-history"></i> Donation History</h2>
-    <div id="donationHistory"></div>
-    <section class="donation-history">
-  <h2>Donation History</h2>
-  <table class="donation-table">
-    <thead>
-      <tr>
-        <th>Listing</th>
-        <th>Amount Donated</th>
-        <th>Date</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>College Tuition Support</td>
-        <td>₹10000</td>
-        <td>2025-10-20</td>
-        <td><span class="status completed">Completed</span></td>
-      </tr>
-      <tr>
-        <td>Food Drive for Homeless</td>
-        <td>₹5000</td>
-        <td>2025-09-15</td>
-        <td><span class="status pending">Pending</span></td>
-      </tr>
-      <tr>
-        <td>Emergency Medical Help</td>
-        <td>₹8500</td>
-        <td>2025-08-02</td>
-        <td><span class="status completed">Completed</span></td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
+    <div id="donationHistory">
+      <p style="text-align:center; color:#888;">No donations yet.</p>
+    </div>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
       const dropdownBtn = document.getElementById("profileMenuBtn");
       const dropdownMenu = document.getElementById("dropdownMenu");
       const logoutBtn = document.getElementById("logoutBtn");
@@ -461,6 +432,42 @@
       navAvatar.src = avatarUrl;
       userName.textContent = displayName;
 
+      // Fetch Active Requests
+      const container = document.getElementById('activeRequestsContainer');
+      try {
+        const res = await fetch('/api/listings?status=active');
+        const requests = await res.json();
+        renderRequests(requests);
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = '<p style="text-align:center;">Error loading requests.</p>';
+      }
+
+      function renderRequests(requests) {
+        if (requests.length === 0) {
+          container.innerHTML = '<p style="text-align:center; color:#666;">No active requests at the moment.</p>';
+          return;
+        }
+
+        container.innerHTML = requests.map(req => `
+            <div class="active-request-card" style="margin-bottom: 2rem;">
+              <div class="active-request-image" style="flex: 0 0 300px;">
+                <img src="${req.image}" alt="${req.title}" style="width:100%; height:100%; object-fit:cover;">
+              </div>
+              <div class="active-request-content">
+                <span style="background: #e0f7ff; color: #00bcd4; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">${req.category || 'General'}</span>
+                <h3 style="margin-top: 10px;">${req.title}</h3>
+                <p>${req.description}</p>
+                 <div style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">
+                    <i class="fas fa-map-marker-alt"></i> ${req.location || 'Unknown'} | 
+                    <span style="color: ${req.urgency === 'High' ? 'red' : 'orange'}">Urgency: ${req.urgency || 'Normal'}</span>
+                 </div>
+                <a href="#" class="view-link" onclick="alert('Donation flow coming soon!')">Donate Now <i class="fas fa-heart"></i></a>
+              </div>
+            </div>
+          `).join('');
+      }
+
       dropdownBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         dropdownMenu.classList.toggle("show");
@@ -477,4 +484,5 @@
     });
   </script>
 </body>
+
 </html>

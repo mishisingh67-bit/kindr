@@ -1,0 +1,19 @@
+{
+    "users": [
+        {
+            "email": "admin@kindr.com",
+            "password": "admin",
+            "role": "admin",
+            "firstName": "Admin",
+            "lastName": "User"
+        },
+        {
+            "email": "donor@kindr.com",
+            "password": "donor",
+            "role": "donor",
+            "firstName": "Donor",
+            "lastName": "User"
+        }
+    ],
+    "listings": []
+}

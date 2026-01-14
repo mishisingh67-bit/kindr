@@ -110,24 +110,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            await simulateAuth(formData);
+            const endpoint = isLoginForm ? '/api/auth/login' : '/api/auth/signup';
 
-            // ✅ Store login/signup data
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message || 'Authentication failed');
+            }
+
+            // ✅ Store login data in localStorage for session management
+            // We still need this to know who is logged in on the client side
             localStorage.setItem('auth', JSON.stringify({
                 isAuthenticated: true,
-                user: {
-                    role: formData.role || 'donor',
-                    firstName: formData.firstName || 'User',
-                    email: formData.email
-                }
+                user: data.user
             }));
-
-            // ✅ Save user in local storage (for demo persistence)
-            if (!isLoginForm) {
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                users.push(formData);
-                localStorage.setItem('users', JSON.stringify(users));
-            }
 
             // ✅ Show success and redirect
             const message = isLoginForm
@@ -135,27 +139,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 : 'Account created successfully! Redirecting...';
             showSuccess(message);
 
-            const role = formData.role || 'donor';
+            const role = data.user.role;
             setTimeout(() => {
-                window.location.href = role === 'donor'
-                    ? 'donor-dashboard.html'
-                    : 'recipient-dashboard.html';
+                if (role === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = role === 'donor'
+                        ? 'donor-dashboard.html'
+                        : 'recipient-dashboard.html';
+                }
             }, 2000);
 
         } catch (error) {
-            showError(error.message);
+            console.error(error);
+            if (error.message.includes('Failed to fetch')) {
+                showError('Connection failed. Is the server running? (Run start_server.bat)');
+            } else {
+                showError(error.message);
+            }
         }
     });
-
-    // ✅ Simulate backend authentication
-    async function simulateAuth(data) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (data.email && data.password) resolve({ success: true });
-                else reject(new Error('Please fill out all required fields.'));
-            }, 1000);
-        });
-    }
 
     // ✅ Social sign-in (Google/Facebook)
     document.querySelectorAll('.social-button').forEach(button => {

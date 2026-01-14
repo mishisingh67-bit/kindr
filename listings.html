@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +8,22 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="listings-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <nav class="main-nav">
         <div class="nav-container">
             <div class="logo-area">
-  <div class="logo">
-    <i class="fas fa-heart"></i>
-    <span>Kindr</span>
-  </div>
-  <a id="dashboardLink" href="#" class="dashboard-link">
-    <i class="fas fa-tachometer-alt"></i> Dashboard
-  </a>
-</div>
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    <span>Kindr</span>
+                </div>
+                <a id="dashboardLink" href="#" class="dashboard-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </div>
             <div class="search-bar">
                 <input type="text" placeholder="Search contributions...">
                 <button><i class="fas fa-search"></i></button>
@@ -31,7 +34,8 @@
                     Filter
                 </button>
                 <div class="user-menu">
-                    <img src="https://ui-avatars.com/api/?name=User&background=ff4b6e&color=fff" alt="User" class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=User&background=ff4b6e&color=fff" alt="User"
+                        class="avatar">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
@@ -81,93 +85,8 @@
         </div>
 
         <div class="listings-grid">
-            <!-- Sample listings -->
-            <div class="listing-card" data-id="1">
-                <div class="listing-image">
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/046/837/169/small/confident-young-south-asian-male-doctor-posing-in-hospital-setting-for-medical-stockgraphy-photo.jpg" alt="Education Support">
-                    <span class="category education">Education</span>
-                </div>
-                <div class="listing-content">
-                    <h3>College Tuition Support</h3>
-                    <p class="description">Help me complete my final year of medical school. Your support will help me serve others.</p>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 75%"></div>
-                    </div>
-                    <div class="listing-stats">
-                        <div class="stat">
-                            <span class="amount">₹100000</span>
-                            <span class="label">needed</span>
-                        </div>
-                        <div class="stat">
-                            <span class="amount">75%</span>
-                            <span class="label">funded</span>
-                        </div>
-                        <div class="stat">
-                            <span class="amount">30</span>
-                            <span class="label">days left</span>
-                        </div>
-                    </div>
-                    <button class="contribute-button">Contribute Now</button>
-                </div>
-            </div>
-
-            <div class="listing-card" data-id="2">
-                <div class="listing-image">
-                    <img src="https://www.shutterstock.com/image-photo/group-surgeons-doing-surgery-patient-260nw-2154587811.jpg" alt="Medical Support">
-                    <span class="category medical">Medical</span>
-                </div>
-                <div class="listing-content">
-                    <h3>Emergency Surgery Fund</h3>
-                    <p class="description">Need support for life-saving heart surgery. Every contribution matters.</p>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 45%"></div>
-                    </div>
-                    <div class="listing-stats">
-                        <div class="stat">
-                            <span class="amount">₹75,000</span>
-                            <span class="label">needed</span>
-                        </div>
-                        <div class="stat">
-                            <span class="amount">45%</span>
-                            <span class="label">funded</span>
-                        </div>
-                        <div class="stat">
-                            <span class="amount">15</span>
-                            <span class="label">days left</span>
-                        </div>
-                    </div>
-                    <button class="contribute-button">Contribute Now</button>
-                </div>
-            </div>
-
-            <div class="listing-card" data-id="3">
-                <div class="listing-image">
-                    <img src="https://dc-cdn.s3-ap-southeast-1.amazonaws.com/dc-Cover-j1lk16fsjbntg22n6rpmv602b6-20160201064516.Medi.png" alt="Food Support">
-                    <span class="category food">Food</span>
-                </div>
-                <div class="listing-content">
-                    <h3>Community Food Drive</h3>
-                    <p class="description">Help us provide meals to 100 families in need this month.</p>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 90%"></div>
-                    </div>
-                    <div class="listing-stats">
-                        <div class="stat">
-                            <span class="amount">₹5,000</span>
-                            <span class="label">needed</span>
-                        </div>
-                        <div class="stat">
-                            <span class="amount">90%</span>
-                            <span class="label">funded</span>
-                        </div>
-                        <div class="stat">
-                            <span class="amount">5</span>
-                            <span class="label">days left</span>
-                        </div>
-                    </div>
-                    <button class="contribute-button">Contribute Now</button>
-                </div>
-            </div>
+            <!-- Listings will be loaded dynamically -->
+            <p style="text-align:center; grid-column: 1/-1;">Loading listings...</p>
         </div>
 
         <div class="load-more">
@@ -177,58 +96,59 @@
 
     <script src="listings.js"></script>
     <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // 1️⃣ Get the ID from the URL
-  const params = new URLSearchParams(window.location.search);
-  const listingId = params.get("id");
-  if (!listingId) return; // No ID in URL
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1️⃣ Get the ID from the URL
+            const params = new URLSearchParams(window.location.search);
+            const listingId = params.get("id");
+            if (!listingId) return; // No ID in URL
 
-  // 2️⃣ Wait for the listings to load (if loaded dynamically)
-  setTimeout(() => {
-    const targetCard = document.querySelector(`[data-id="${listingId}"]`);
+            // 2️⃣ Wait for the listings to load (if loaded dynamically)
+            setTimeout(() => {
+                const targetCard = document.querySelector(`[data-id="${listingId}"]`);
 
-    if (targetCard) {
-      // Scroll into view smoothly
-      targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (targetCard) {
+                    // Scroll into view smoothly
+                    targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
 
-      // Highlight the selected card
-      targetCard.classList.add("highlighted");
+                    // Highlight the selected card
+                    targetCard.classList.add("highlighted");
 
-      // Remove highlight after a short delay (optional)
-      setTimeout(() => {
-        targetCard.classList.remove("highlighted");
-      }, 3000);
-    }
-  }, 500); // slight delay to ensure cards are rendered
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const dashboardLink = document.getElementById("dashboardLink");
+                    // Remove highlight after a short delay (optional)
+                    setTimeout(() => {
+                        targetCard.classList.remove("highlighted");
+                    }, 3000);
+                }
+            }, 500); // slight delay to ensure cards are rendered
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const dashboardLink = document.getElementById("dashboardLink");
 
-  // Get logged-in user data
-  const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+            // Get logged-in user data
+            const auth = JSON.parse(localStorage.getItem("auth") || "{}");
 
-  // If user not logged in → hide dashboard link
-  if (!auth.isAuthenticated || !auth.user) {
-    dashboardLink.style.display = "none";
-    return;
-  }
+            // If user not logged in → hide dashboard link
+            if (!auth.isAuthenticated || !auth.user) {
+                dashboardLink.style.display = "none";
+                return;
+            }
 
-  // If logged in → show and assign correct redirect
-  dashboardLink.style.display = "inline-flex";
-  dashboardLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (auth.user.role === "donor") {
-      window.location.href = "donor-dashboard.html";
-    } else if (auth.user.role === "recipient") {
-      window.location.href = "recipient-dashboard.html";
-    } else {
-      window.location.href = "login.html";
-    }
-  });
-});
-</script>
+            // If logged in → show and assign correct redirect
+            dashboardLink.style.display = "inline-flex";
+            dashboardLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                if (auth.user.role === "donor") {
+                    window.location.href = "donor-dashboard.html";
+                } else if (auth.user.role === "recipient") {
+                    window.location.href = "recipient-dashboard.html";
+                } else {
+                    window.location.href = "login.html";
+                }
+            });
+        });
+    </script>
 
 </body>
-</html> 
+
+</html>

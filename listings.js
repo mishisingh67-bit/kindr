@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Check authentication
     const authData = localStorage.getItem('auth');
     if (!authData) {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup user menu
     const userMenu = document.querySelector('.user-menu');
     if (userMenu) {
-        userMenu.addEventListener('click', function() {
+        userMenu.addEventListener('click', function () {
             const menu = document.createElement('div');
             menu.className = 'user-dropdown';
             menu.innerHTML = `
@@ -37,27 +37,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 <a href="/settings.html"><i class="fas fa-cog"></i> Settings</a>
                 <a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             `;
-            
+
             // Remove existing dropdown if any
             const existingDropdown = document.querySelector('.user-dropdown');
             if (existingDropdown) {
                 existingDropdown.remove();
             } else {
                 document.body.appendChild(menu);
-                
+
                 // Position the dropdown
                 const rect = userMenu.getBoundingClientRect();
                 menu.style.position = 'absolute';
                 menu.style.top = rect.bottom + 'px';
                 menu.style.right = (window.innerWidth - rect.right) + 'px';
-                
+
                 // Handle logout
-                document.getElementById('logout').addEventListener('click', function(e) {
+                document.getElementById('logout').addEventListener('click', function (e) {
                     e.preventDefault();
                     localStorage.removeItem('auth');
                     window.location.href = '/login.html';
                 });
-                
+
                 // Close dropdown when clicking outside
                 document.addEventListener('click', function closeDropdown(e) {
                     if (!menu.contains(e.target) && !userMenu.contains(e.target)) {
@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close filter panel when clicking outside
     document.addEventListener('click', (e) => {
-        if (filterPanelOpen && 
-            !filterPanel.contains(e.target) && 
+        if (filterPanelOpen &&
+            !filterPanel.contains(e.target) &&
             !filterButton.contains(e.target)) {
             filterPanelOpen = false;
             filterPanel.style.right = '-300px';
@@ -91,116 +91,69 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Search functionality
-    const searchInput = document.querySelector('.search-bar input');
-    const searchButton = document.querySelector('.search-bar button');
-    const listingCards = document.querySelectorAll('.listing-card');
-
-    function performSearch(query) {
-        query = query.toLowerCase();
-        listingCards.forEach(card => {
-            const title = card.querySelector('h3').textContent.toLowerCase();
-            const description = card.querySelector('.description').textContent.toLowerCase();
-            const category = card.querySelector('.category').textContent.toLowerCase();
-            
-            if (title.includes(query) || description.includes(query) || category.includes(query)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-
-    searchInput.addEventListener('input', (e) => {
-        performSearch(e.target.value);
-    });
-
-    searchButton.addEventListener('click', () => {
-        performSearch(searchInput.value);
-    });
-
-    // Sorting functionality
-    const sortSelect = document.querySelector('.sort-options select');
+    // Load listings from API
     const listingsGrid = document.querySelector('.listings-grid');
 
-    sortSelect.addEventListener('change', () => {
-        const sortValue = sortSelect.value;
-        const cardsArray = Array.from(listingCards);
-
-        cardsArray.sort((a, b) => {
-            switch(sortValue) {
-                case 'recent':
-                    // For demo, just reverse current order
-                    return -1;
-                case 'urgent':
-                    const daysA = parseInt(a.querySelector('.stat .amount').textContent);
-                    const daysB = parseInt(b.querySelector('.stat .amount').textContent);
-                    return daysA - daysB;
-                case 'amount':
-                    const amountA = parseInt(a.querySelector('.stat .amount').textContent.replace('$', '').replace(',', ''));
-                    const amountB = parseInt(b.querySelector('.stat .amount').textContent.replace('$', '').replace(',', ''));
-                    return amountA - amountB;
-                default:
-                    return 0;
-            }
-        });
-
-        // Re-append sorted cards
-        cardsArray.forEach(card => {
-            listingsGrid.appendChild(card);
-        });
-    });
-
-    // Filter functionality
-    const filterOptions = document.querySelectorAll('.filter-options input');
-    const applyFiltersButton = document.querySelector('.apply-filters');
-    const locationSelect = document.querySelector('.filter-section select');
-    const minAmount = document.querySelector('.range-inputs input:first-child');
-    const maxAmount = document.querySelector('.range-inputs input:last-child');
-
-    function applyFilters() {
-        const selectedCategories = Array.from(filterOptions)
-            .filter(input => input.checked)
-            .map(input => input.value);
-        
-        const location = locationSelect.value;
-        const min = parseInt(minAmount.value) || 0;
-        const max = parseInt(maxAmount.value) || Infinity;
-
-        listingCards.forEach(card => {
-            const category = card.querySelector('.category').textContent.toLowerCase();
-            const amount = parseInt(card.querySelector('.stat .amount').textContent.replace('$', '').replace(',', ''));
-            
-            const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(category);
-            const locationMatch = !location || location === '';
-            const amountMatch = amount >= min && amount <= max;
-
-            card.style.display = categoryMatch && locationMatch && amountMatch ? 'block' : 'none';
-        });
-
-        // Close filter panel after applying
-        filterPanelOpen = false;
-        filterPanel.style.right = '-300px';
-        filterButton.style.borderColor = '#eee';
+    async function fetchListings() {
+        try {
+            listingsGrid.innerHTML = '<p>Loading...</p>';
+            const res = await fetch('/api/listings?status=active');
+            const listings = await res.json();
+            renderListings(listings);
+        } catch (error) {
+            console.error(error);
+            listingsGrid.innerHTML = '<p>Error loading listings.</p>';
+        }
     }
 
-    applyFiltersButton.addEventListener('click', applyFilters);
+    function renderListings(listings) {
+        listingsGrid.innerHTML = '';
+        if (listings.length === 0) {
+            listingsGrid.innerHTML = '<p>No active listings found.</p>';
+            return;
+        }
 
-    // Load more functionality
-    const loadMoreButton = document.querySelector('.load-more button');
-    let currentPage = 1;
+        listings.forEach(listing => {
+            const card = document.createElement('div');
+            card.className = 'listing-card';
 
-    loadMoreButton.addEventListener('click', () => {
-        // Simulate loading more items
-        loadMoreButton.textContent = 'Loading...';
-        setTimeout(() => {
-            // Clone existing cards for demo
-            const newCards = Array.from(listingCards).slice(0, 3).map(card => card.cloneNode(true));
-            newCards.forEach(card => {
-                listingsGrid.appendChild(card);
-            });
-            loadMoreButton.textContent = 'Load More';
-            currentPage++;
-        }, 1000);
-    });
+            // Format progress bar if we had a goal
+            // For now, simple card
+            card.innerHTML = `
+                <div class="image-container" style="height:200px; overflow:hidden;">
+                    <img src="${listing.image}" alt="${listing.title}" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="content" style="padding: 1.5rem;">
+                    <span class="category" style="color:var(--primary-color); font-size:0.9rem;">${listing.category}</span>
+                    <h3 style="margin: 0.5rem 0;">${listing.title}</h3>
+                    <p class="description" style="color:#666; font-size:0.9rem;">${listing.description}</p>
+                    
+                    <div class="stats" style="margin: 1rem 0; display:flex; justify-content:space-between; align-items:center;">
+                         <span class="location"><i class="fas fa-map-marker-alt"></i> ${listing.location}</span>
+                         <span class="urgency" style="color:${listing.urgency === 'High' ? 'red' : 'orange'}">${listing.urgency} Priority</span>
+                    </div>
+
+                    <div class="progress-bar-container" style="background:#eee; height:8px; border-radius:4px; margin-bottom:1rem; overflow:hidden;">
+                        <div class="progress" style="width:${listing.progress || 0}%; background:var(--primary-color); height:100%;"></div>
+                    </div>
+                    
+                    <button class="donate-btn" style="width:100%; padding:0.8rem; background:var(--primary-color); color:white; border:none; border-radius:8px; cursor:pointer;" onclick="alert('Donation flow coming soon')">Donate Now</button>
+                </div>
+            `;
+            listingsGrid.appendChild(card);
+        });
+    }
+
+    // Initial load
+    fetchListings();
+
+    // Filter functionality (simplified for now)
+    const applyFiltersButton = document.querySelector('.apply-filters');
+    if (applyFiltersButton) {
+        applyFiltersButton.addEventListener('click', () => {
+            // Re-fetch or filter client side
+            // For this iteration, just reloading all
+            fetchListings();
+        });
+    }
 }); 

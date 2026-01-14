@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -45,6 +46,21 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    .progress-container {
+      background: #eee;
+      border-radius: 8px;
+      height: 10px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--primary-color);
+      width: 0%;
+      transition: width 0.4s ease;
     }
 
     .nav-link {
@@ -96,7 +112,9 @@
       z-index: 1000;
     }
 
-    .dropdown-menu.show { display: block; }
+    .dropdown-menu.show {
+      display: block;
+    }
 
     .dropdown-item {
       display: flex;
@@ -114,7 +132,9 @@
       color: var(--primary-color);
     }
 
-    .dropdown-item.logout { color: var(--primary-color); }
+    .dropdown-item.logout {
+      color: var(--primary-color);
+    }
 
     /* Header */
     .centered-header {
@@ -125,6 +145,10 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       margin: 2rem auto;
       width: 80%;
+    }
+
+    .centered-header h1 {
+      color: #666;
     }
 
     /* Stats */
@@ -163,19 +187,30 @@
       margin: 2rem;
     }
 
+    .requests-section h2 {
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+
     .listing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
     }
 
     .listing-card {
       background: #fff;
       border-radius: 14px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
       overflow: hidden;
       transition: var(--transition);
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
 
     .listing-card img {
@@ -186,6 +221,7 @@
 
     .listing-card .content {
       padding: 1rem;
+      flex-grow: 1;
     }
 
     .listing-card:hover {
@@ -210,6 +246,7 @@
       background: #e03b5e;
     }
 
+    /* Create Listing Inputs */
     .add-request-btn {
       background: var(--primary-color);
       color: #fff;
@@ -232,7 +269,8 @@
       margin-bottom: 1rem;
     }
 
-    .input-group input, .input-group textarea {
+    .input-group input,
+    .input-group textarea {
       padding: 0.7rem;
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -257,6 +295,65 @@
       height: 100%;
       object-fit: cover;
     }
+
+    .complete-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: var(--transition);
+    }
+
+    .complete-btn:hover {
+      background: #e03b5e;
+    }
+
+    .floating-create-btn {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.4rem;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: var(--transition);
+    }
+
+    .floating-create-btn:hover {
+      background: #e03b5e;
+    }
+
+    .dashboard-btn {
+      text-decoration: none;
+      color: var(--primary-color, #ff4b6e);
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 75, 110, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .dashboard-btn:hover {
+      background: var(--primary-color, #ff4b6e);
+      color: white;
+    }
+
+    .dashboard-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(255, 75, 110, 0.3);
+    }
   </style>
 </head>
 
@@ -268,7 +365,7 @@
         <i class="fas fa-heart"></i> Kindr
       </div>
       <div class="nav-links">
-        <a href="recipient-dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="recipient-dashboard.html" class="dashboard-btn">Dashboard</a>
       </div>
     </div>
 
@@ -289,7 +386,6 @@
   <!-- Header -->
   <div class="centered-header">
     <h1>Welcome back, <span id="userName">User</span>!</h1>
-    
   </div>
 
   <!-- Stats -->
@@ -309,28 +405,68 @@
   </div>
 
   <!-- Active Listings -->
-  <div class="requests-section">
-    <h2><i class="fas fa-bullhorn"></i> Active Listings</h2>
-
-    <div class="input-group">
-      <input type="text" id="requestTitle" placeholder="Title">
-      <textarea id="requestDesc" placeholder="Description" rows="3"></textarea>
-      <div class="image-preview" id="imagePreview"><span>No image selected</span></div>
-      <input type="file" id="imageInput" accept="image/*">
-      <button class="add-request-btn" id="createBtn"><i class="fas fa-plus"></i> Create New Listing</button>
-    </div>
+  <div class="requests-section" style="position: relative;">
+    <h2><i class="fas fa-bullhorn"></i> Your Requests</h2>
 
     <div class="listing-grid" id="activeListings"></div>
-  </div>
 
-  <!-- Completed Listings -->
-  <div class="requests-section">
-    <h2><i class="fas fa-check"></i> Completed Listings</h2>
-    <div class="listing-grid" id="completedListings"></div>
+    <div class="input-group" id="createForm"
+      style="display:none; margin-top:2rem; background: #f9f9f9; padding: 20px; border-radius: 12px;">
+      <h3 style="margin-bottom: 15px; color: #333;">Create New Request</h3>
+
+      <label>Title</label>
+      <input type="text" id="requestTitle" placeholder="e.g., Education Support">
+
+      <label>Description</label>
+      <textarea id="requestDesc" placeholder="Describe your situation in detail..." rows="3"></textarea>
+
+      <label>Category</label>
+      <select id="requestCategory" style="padding: 0.7rem; border-radius: 8px; border: 1px solid #ccc; width: 100%;">
+        <option value="Education">Education</option>
+        <option value="Medical">Medical</option>
+        <option value="Food">Food & Basic Needs</option>
+        <option value="Emergency">Emergency</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>Urgency Level</label>
+      <select id="requestUrgency" style="padding: 0.7rem; border-radius: 8px; border: 1px solid #ccc; width: 100%;">
+        <option value="Low">Low - Can wait a few weeks</option>
+        <option value="Medium">Medium - Needed within a week</option>
+        <option value="High">High - Immediate need</option>
+      </select>
+
+      <label>Location</label>
+      <input type="text" id="requestLocation" placeholder="City, State">
+
+      <label>Cover Image</label>
+      <div class="image-preview" id="imagePreview"><span>No image selected</span></div>
+      <input type="file" id="imageInput" accept="image/*">
+
+      <label>Supporting Documents (Medical bills, ID, etc.)</label>
+      <div id="docsPreview" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;"></div>
+      <input type="file" id="docsInput" accept="image/*" multiple>
+
+      <label>UPI QR Code (for direct payments)</label>
+      <div class="image-preview" id="qrPreview" style="height: 100px; width: 100px;"><span>No QR</span></div>
+      <input type="file" id="qrInput" accept="image/*">
+
+      <button class="add-request-btn" id="createBtn" style="margin-top: 20px;"><i class="fas fa-paper-plane"></i> Submit
+        for Review</button>
+    </div>
+
+    <button class="floating-create-btn" id="toggleCreateBtn"><i class="fas fa-plus"></i> New Request</button>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      // Auth Check
+      const auth = JSON.parse(localStorage.getItem('auth') || "{}");
+      if (!auth.isAuthenticated || auth.user.role !== 'recipient') {
+        window.location.href = 'login.html';
+        return;
+      }
+
       const navUserName = document.getElementById("navUserName");
       const navAvatar = document.getElementById("navAvatar");
       const userName = document.getElementById("userName");
@@ -339,72 +475,190 @@
       const logoutBtn = document.getElementById("logoutBtn");
 
       const activeContainer = document.getElementById("activeListings");
-      const completedContainer = document.getElementById("completedListings");
-      const totalCount = document.getElementById("totalRequests");
-      const activeCount = document.getElementById("activeRequests");
-      const completedCount = document.getElementById("completedRequests");
 
+      // Inputs
       const titleInput = document.getElementById("requestTitle");
       const descInput = document.getElementById("requestDesc");
+      const categoryInput = document.getElementById("requestCategory");
+      const urgencyInput = document.getElementById("requestUrgency");
+      const locationInput = document.getElementById("requestLocation");
+
+      // File inputs
       const imgInput = document.getElementById("imageInput");
       const imgPreview = document.getElementById("imagePreview");
+
+      const docsInput = document.getElementById("docsInput");
+      const docsPreview = document.getElementById("docsPreview");
+
+      const qrInput = document.getElementById("qrInput");
+      const qrPreview = document.getElementById("qrPreview");
+
       const createBtn = document.getElementById("createBtn");
+      const createForm = document.getElementById("createForm");
+      const toggleCreateBtn = document.getElementById("toggleCreateBtn");
 
-      let listings = JSON.parse(localStorage.getItem("recipientListings") || "[]");
-
-      const renderListings = () => {
-        activeContainer.innerHTML = "";
-        completedContainer.innerHTML = "";
-        let active = 0, completed = 0;
-
-        listings.forEach((listing, index) => {
-          const card = `
-            <div class="listing-card">
-              <button class="delete-btn" data-index="${index}"><i class="fas fa-trash"></i></button>
-              <img src="${listing.img}" alt="${listing.title}">
-              <div class="content">
-                <h4>${listing.title}</h4>
-                <p>${listing.desc}</p>
-              </div>
-            </div>`;
-          if (listing.status === "active") {
-            activeContainer.innerHTML += card;
-            active++;
-          } else {
-            completedContainer.innerHTML += card;
-            completed++;
-          }
-        });
-
-        totalCount.textContent = listings.length;
-        activeCount.textContent = active;
-        completedCount.textContent = completed;
-
-        localStorage.setItem("recipientListings", JSON.stringify(listings));
-      };
-
-      renderListings();
-
-      // Delete Listing
-      document.body.addEventListener("click", (e) => {
-        if (e.target.closest(".delete-btn")) {
-          const index = e.target.closest(".delete-btn").dataset.index;
-          if (confirm("Are you sure you want to delete this listing?")) {
-            listings.splice(index, 1);
-            renderListings();
-          }
-        }
-      });
-
-      // User data
-      const auth = JSON.parse(localStorage.getItem("auth") || "{}");
-      const displayName = auth.user?.firstName || "User";
+      // User Info
+      const displayName = auth.user.firstName || "User";
       const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=ff4b6e&color=fff`;
       navUserName.textContent = displayName;
       userName.textContent = displayName;
       navAvatar.src = avatarUrl;
 
-      // Dropdown
+      const getBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
+      };
+
+      const fetchListings = async () => {
+        try {
+          const res = await fetch(`/api/listings?recipientId=${auth.user.email}`); // Assuming email is unique ID for now
+          const listings = await res.json();
+          renderListings(listings);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      const renderListings = (listings) => {
+        activeContainer.innerHTML = "";
+
+        if (listings.length === 0) {
+          activeContainer.innerHTML = "<p>No request found. Create one to get started.</p>";
+          return;
+        }
+
+        listings.forEach(listing => {
+          const card = document.createElement("div");
+          card.className = "listing-card";
+
+          let statusBadge = "";
+          if (listing.status === 'pending') statusBadge = '<span style="background:orange; color:white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; position: absolute; top: 10px; left: 10px;">Pending Review</span>';
+          else if (listing.status === 'active') statusBadge = '<span style="background:green; color:white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; position: absolute; top: 10px; left: 10px;">Active</span>';
+          else if (listing.status === 'rejected') statusBadge = '<span style="background:red; color:white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; position: absolute; top: 10px; left: 10px;">Rejected</span>';
+
+
+          card.innerHTML = `
+        ${statusBadge}
+        <img src="${listing.image}" alt="${listing.title}">
+        <div class="content">
+          <h4>${listing.title}</h4>
+          <p>${listing.description}</p>
+          <p style="font-size: 0.8em; color: #666;">Category: ${listing.category} | Urgency: ${listing.urgency}</p>
+        </div>
+      `;
+          activeContainer.appendChild(card);
+        });
+
+        document.getElementById("totalRequests").textContent = listings.length;
+        document.getElementById("activeRequests").textContent = listings.filter(l => l.status === 'active').length;
+      };
+
+      // Image Preview Logic
+      imgInput.addEventListener("change", async e => {
+        const file = e.target.files[0];
+        if (file) {
+          const base64 = await getBase64(file);
+          imgPreview.innerHTML = `<img src="${base64}" alt="Preview">`;
+        }
+      });
+
+      qrInput.addEventListener("change", async e => {
+        const file = e.target.files[0];
+        if (file) {
+          const base64 = await getBase64(file);
+          qrPreview.innerHTML = `<img src="${base64}" alt="Preview">`;
+        }
+      });
+
+      let selectedDocs = [];
+      docsInput.addEventListener("change", async e => {
+        docsPreview.innerHTML = "";
+        selectedDocs = [];
+        const files = Array.from(e.target.files);
+        for (let file of files) {
+          const base64 = await getBase64(file);
+          selectedDocs.push(base64);
+          const img = document.createElement("img");
+          img.src = base64;
+          img.style.width = "50px";
+          img.style.height = "50px";
+          img.style.objectFit = "cover";
+          docsPreview.appendChild(img);
+        }
+      });
+
+      // Create Listing
+      createBtn.addEventListener("click", async () => {
+        // Validate
+        if (!titleInput.value || !descInput.value || !locationInput.value) {
+          alert("Please fill in all required fields.");
+          return;
+        }
+
+        createBtn.textContent = 'Submitting...';
+        createBtn.disabled = true;
+
+        try {
+          const imgFile = imgInput.files[0];
+          const qrFile = qrInput.files[0];
+
+          const image = imgFile ? await getBase64(imgFile) : "https://via.placeholder.com/400x200";
+          const qrCode = qrFile ? await getBase64(qrFile) : null;
+
+          const newListing = {
+            message: "New Request",
+            recipientId: auth.user.email, // using email as ID
+            title: titleInput.value,
+            description: descInput.value,
+            category: categoryInput.value,
+            urgency: urgencyInput.value,
+            location: locationInput.value,
+            image: image,
+            documents: selectedDocs,
+            qrCode: qrCode,
+            status: 'pending' // Enforced by backend typically, but good to be explicit
+          };
+
+          const res = await fetch('/api/listings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newListing)
+          });
+
+          if (res.ok) {
+            alert('Request submitted successfully! It is now pending admin approval.');
+            // Reset form
+            createForm.style.display = "none";
+            titleInput.value = "";
+            descInput.value = "";
+            locationInput.value = "";
+            fetchListings();
+          } else {
+            const text = await res.text();
+            alert(`Error submitting request (${res.status}): ${text}`);
+          }
+
+        } catch (e) {
+          console.error(e);
+          alert('Error submitting request. Please ensure the server is running (run start_server.bat) and you are accessing the page via http://localhost:8000');
+        } finally {
+          createBtn.textContent = 'Submit for Review';
+          createBtn.disabled = false;
+        }
+      });
+
+      toggleCreateBtn.addEventListener("click", () => {
+        createForm.style.display = createForm.style.display === "none" ? "block" : "none";
+        if (createForm.style.display === 'block') {
+          createForm.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+
+      // Menu logic
       dropdownBtn.addEventListener("click", e => {
         e.stopPropagation();
         dropdownMenu.classList.toggle("show");
@@ -415,31 +669,10 @@
         window.location.href = "index.html";
       });
 
-      // Image preview
-      imgInput.addEventListener("change", e => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = ev => imgPreview.innerHTML = `<img src="${ev.target.result}" alt="Preview">`;
-          reader.readAsDataURL(file);
-        }
-      });
-
-      // Create new listing
-      createBtn.addEventListener("click", () => {
-        const title = titleInput.value.trim();
-        const desc = descInput.value.trim();
-        const img = imgPreview.querySelector("img")?.src || "https://via.placeholder.com/300x180?text=Request";
-        if (!title || !desc) return alert("Please fill in all fields.");
-
-        listings.push({ title, desc, img, status: "active" });
-        renderListings();
-
-        titleInput.value = "";
-        descInput.value = "";
-        imgPreview.innerHTML = "<span>No image selected</span>";
-      });
+      fetchListings();
     });
   </script>
+
 </body>
+
 </html>

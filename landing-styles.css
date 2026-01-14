@@ -23,17 +23,28 @@
     align-items: center;
 }
 
-.nav-button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 25px;
-    transition: all 0.3s ease;
+.nav-button  {
+    text-decoration: none;
+  color:  var(--primary-color, #ff4b6e);
+  font-weight: 600;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 75, 110, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.nav-button:hover {
-    background-color: #ff3d63;
-    transform: translateY(-2px);
+
+
+
+
+.nav-button :hover {
+   
+  background:  #ff4b6e;
+   color: #fff;
 }
 
 /* Hero section */
@@ -77,13 +88,14 @@
 }
 
 .primary-button {
-    background-color: white;
-    color: var(--primary-color);
+     background-color: transparent;
+    border: 2px solid white;
+    color: white;
 }
 
 .primary-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    background-color: white;
+    color: var(--primary-color);
 }
 
 .secondary-button {
