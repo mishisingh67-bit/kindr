@@ -107,6 +107,8 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 listing = next((l for l in db['listings'] if l['id'] == listing_id), None)
                 if listing:
                     listing['status'] = 'rejected'
+                    listing['donors'] = []
+                    listing['donations'] = []
                     save_db(db)
                     response_data = {'success': True, 'listing': listing}
                 else:

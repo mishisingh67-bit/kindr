@@ -632,11 +632,8 @@
               <h3 style="margin:5px 0;">${listing.title}</h3>
               <p style="font-size:0.9rem; color:#666; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${listing.description}</p>
               
-              <div class="progress-container">
-                <div class="progress-bar" style="width: ${listing.progress || 0}%"></div>
-              </div>
               <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-top:5px; color:#666;">
-                <span>Progress: ${listing.progress || 0}%</span>
+                <span>Category: ${listing.category}</span>
                 <span>${listing.donors ? listing.donors.length : 0} Donors</span>
               </div>
             </div>

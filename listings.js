@@ -135,10 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
                          <span class="location"><i class="fas fa-map-marker-alt"></i> ${listing.location}</span>
                          <span class="urgency" style="color:${listing.urgency === 'High' ? 'red' : 'orange'}">${listing.urgency} Priority</span>
                     </div>
-
-                    <div class="progress-bar-container" style="background:#eee; height:8px; border-radius:4px; margin-bottom:1rem; overflow:hidden;">
-                        <div class="progress" style="width:${listing.progress || 0}%; background:var(--primary-color); height:100%;"></div>
-                    </div>
                     
                     <button class="donate-btn-real" style="width:100%; padding:0.8rem; background:var(--primary-color); color:white; border:none; border-radius:8px; cursor:pointer;" onclick="openDonateModal('${listing.id}')">Donate Now</button>
                 </div>

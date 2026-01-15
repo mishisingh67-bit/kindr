@@ -51,10 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span class="tag ${data.urgency === 'High' ? 'urgent' : ''}">${data.urgency || 'Normal'}</span>
                     <span class="tag">${data.category || 'General'}</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: ${data.progress || 0}%"></div>
-                </div>
-                <span class="progress-text">Progress: ${data.progress || 0}% funded</span>
             </div>
         `;
         return card;
