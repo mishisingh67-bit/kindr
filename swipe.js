@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Check authentication
     const authData = localStorage.getItem('auth');
     if (!authData) {
@@ -25,99 +25,75 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentCardIndex = 0;
     const cardStack = document.querySelector('.card-stack');
     const cards = [];
-
-    // Sample data - Replace with API call
-    const sampleRequests = [
-        {
-            id: 1,
-            title: "College Tuition Support",
-            location: "New York, USA",
-            distance: "2.5 miles away",
-            description: "Help me complete my final year of medical school. Your support will help me serve others in need.",
-            image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6",
-            tags: ["Urgent", "Education", "Healthcare"],
-            progress: 75,
-            amount: 15000,
-            daysLeft: 30
-        },
-        {
-            id: 2,
-            title: "Emergency Medical Treatment",
-            location: "Boston, USA",
-            distance: "1.8 miles away",
-            description: "Need assistance with critical medical procedure. Every contribution makes a difference.",
-            image: "https://images.unsplash.com/photo-1584515933487-779824d29309",
-            tags: ["Urgent", "Medical", "Healthcare"],
-            progress: 60,
-            amount: 8000,
-            daysLeft: 15
-        },
-        {
-            id: 3,
-            title: "Food Bank Support",
-            location: "Chicago, USA",
-            distance: "3.2 miles away",
-            description: "Help us provide meals to families in need. Together we can fight hunger in our community.",
-            image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c",
-            tags: ["Food", "Community"],
-            progress: 45,
-            amount: 5000,
-            daysLeft: 45
-        }
-    ];
+    let currentListing = null;
 
     // Initialize cards
     function createCard(data) {
         const card = document.createElement('div');
         card.className = 'card';
+        card.dataset.listingId = data.id;
         card.innerHTML = `
             <div class="verification-badge">
                 <i class="fas fa-check-circle"></i>
                 Verified
             </div>
             <div class="card-image">
-                <img src="${data.image}" alt="${data.title}">
+                <img src="${data.image || 'https://via.placeholder.com/400x300'}" alt="${data.title}">
             </div>
             <div class="card-content">
                 <h2>${data.title}</h2>
                 <div class="location">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>${data.location}</span>
-                    <span class="distance">${data.distance}</span>
+                    <span>${data.location || 'Unknown'}</span>
                 </div>
                 <p class="description">${data.description}</p>
                 <div class="tags">
-                    ${data.tags.map(tag => `
-                        <span class="tag ${tag.toLowerCase() === 'urgent' ? 'urgent' : ''}">${tag}</span>
-                    `).join('')}
+                    <span class="tag ${data.urgency === 'High' ? 'urgent' : ''}">${data.urgency || 'Normal'}</span>
+                    <span class="tag">${data.category || 'General'}</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress" style="width: ${data.progress}%"></div>
+                    <div class="progress" style="width: ${data.progress || 0}%"></div>
                 </div>
-                <span class="progress-text">$${data.amount.toLocaleString()} needed • ${data.progress}% funded • ${data.daysLeft} days left</span>
+                <span class="progress-text">Progress: ${data.progress || 0}% funded</span>
             </div>
         `;
         return card;
     }
 
-    function initializeCards() {
+    async function initializeCards() {
         // Clear existing cards
         cardStack.innerHTML = '';
         cards.length = 0;
 
-        // Create and add cards to the stack
-        sampleRequests.forEach((request, index) => {
-            const card = createCard(request);
-            card.style.zIndex = sampleRequests.length - index;
-            card.style.transform = `scale(${1 - index * 0.05}) translateY(${index * 10}px)`;
-            card.style.opacity = index > 2 ? '0' : '1';
-            cards.push(card);
-            cardStack.appendChild(card);
-        });
+        try {
+            const donorId = auth.user.email;
+            const res = await fetch(`http://127.0.0.1:8000/api/listings?status=active&donorId=${donorId}`);
+            const activeRequests = await res.json();
 
-        // Setup event listeners for the top card
-        if (cards.length > 0) {
-            setupCardEvents(cards[0]);
+            if (activeRequests.length === 0) {
+                cardStack.innerHTML = '<div class="no-cards">No more requests to swipe!</div>';
+                return;
+            }
+
+            // Create and add cards to the stack
+            activeRequests.forEach((request, index) => {
+                // Map API data to card format if needed, or use directly
+                const card = createCard(request);
+                card.style.zIndex = activeRequests.length - index;
+                card.style.transform = `scale(${1 - index * 0.05}) translateY(${index * 10}px)`;
+                card.style.opacity = index > 2 ? '0' : '1';
+                cards.push(card);
+                cardStack.appendChild(card);
+            });
+
+            // Setup event listeners for the top card
+            if (cards.length > 0) {
+                setupCardEvents(cards[0]);
+            }
+
+        } catch (error) {
+            console.error('Error fetching cards:', error);
+            cardStack.innerHTML = '<div class="no-cards">Error loading requests.</div>';
         }
     }
 
@@ -155,16 +131,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Calculate rotation based on horizontal movement
             const rotate = currentX * 0.1;
-            
+
             // Calculate scale based on vertical movement (subtle effect)
             const scale = Math.max(1 - Math.abs(currentY) / 2000, 0.95);
-            
+
             // Update card position with rotation and scale
             card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg) scale(${scale})`;
 
             // Update background color based on swipe direction
             updateBackgroundColor(currentX);
-            
+
             // Update other cards in stack
             updateStackedCards(currentX);
         }
@@ -224,11 +200,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function completeSwipe(direction) {
+    async function completeSwipe(direction) {
         const card = cards[0];
+        const listingId = card.dataset.listingId;
         const rotate = direction === 'right' ? 30 : -30;
         const translateX = direction === 'right' ? window.innerWidth * 1.5 : -window.innerWidth * 1.5;
-        
+
+        const donorId = auth.user.email;
+
+        // Record the swipe regardless of direction
+        try {
+            await fetch(`http://127.0.0.1:8000/api/listings/${listingId}/swipe`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ donorId })
+            });
+            console.log(`Recorded swipe (${direction}) for listing ${listingId}`);
+        } catch (e) {
+            console.error("Failed to record swipe:", e);
+        }
+
+        // If swiped right, also record the match
+        if (direction === 'right') {
+            try {
+                await fetch(`http://127.0.0.1:8000/api/listings/${listingId}/match`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ donorId })
+                });
+                console.log(`Matched with listing ${listingId}`);
+            } catch (e) {
+                console.error("Failed to record match:", e);
+            }
+        }
+
         card.style.transform = `translate(${translateX}px, ${window.innerHeight * 0.5}px) rotate(${rotate}deg)`;
         card.style.opacity = 0;
 
@@ -240,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             cardStack.removeChild(card);
             cards.shift();
-            
+
             // Update remaining cards
             cards.forEach((card, index) => {
                 card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
@@ -273,28 +278,60 @@ document.addEventListener('DOMContentLoaded', function() {
         resetButtonOpacity();
     }
 
-    function loadMoreCards() {
-        // In a real app, this would be an API call
-        // For demo, we'll just reuse our sample data
-        sampleRequests.forEach(request => {
-            const card = createCard(request);
-            card.style.opacity = '0';
-            cards.push(card);
-            cardStack.appendChild(card);
-        });
+    async function loadMoreCards() {
+        try {
+            const donorId = auth.user.email;
+            const res = await fetch(`http://127.0.0.1:8000/api/listings?status=active&donorId=${donorId}`);
+            const newRequests = await res.json();
 
-        // Update positions of all cards
-        cards.forEach((card, index) => {
-            card.style.zIndex = cards.length - index;
-            card.style.transform = `scale(${1 - index * 0.05}) translateY(${index * 10}px)`;
-            card.style.opacity = index > 2 ? '0' : '1';
-        });
+            if (newRequests.length === 0) return;
+
+            newRequests.forEach(request => {
+                const card = createCard(request);
+                card.style.opacity = '0';
+                cards.push(card);
+                cardStack.appendChild(card);
+            });
+
+            // Update positions of all cards
+            cards.forEach((card, index) => {
+                card.style.zIndex = cards.length - index;
+                card.style.transform = `scale(${1 - index * 0.05}) translateY(${index * 10}px)`;
+                // Only make the top 3 visible
+                card.style.opacity = index > 2 ? '0' : '1';
+                // Reset transition for new/reordered cards
+                card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+            });
+
+        } catch (e) {
+            console.error("Error loading more cards:", e);
+        }
     }
 
     // Button handlers
     document.querySelector('.decline').addEventListener('click', () => completeSwipe('left'));
     document.querySelector('.accept').addEventListener('click', () => completeSwipe('right'));
-    document.querySelector('.info').addEventListener('click', showInfo);
+    document.querySelector('.info').addEventListener('click', () => {
+        const topCard = cards[0];
+        if (topCard) {
+            const listingId = topCard.dataset.listingId;
+            // Find listing data
+            fetch(`http://127.0.0.1:8000/api/listings/matches?donorId=${auth.user.email}`) // This is a bit inefficient, but lets assume we have it
+                .then(res => res.json())
+                .then(matches => {
+                    // Actually, we can just use the data we already fetched for cards
+                    // But card data is only partially stored in DOM. 
+                    // Let's modify createCard to store the full data or fetch it.
+                    // For now, let's just use the card's ID to fetch again.
+                    fetch(`http://127.0.0.1:8000/api/listings`)
+                        .then(res => res.json())
+                        .then(all => {
+                            currentListing = all.find(l => l.id === listingId);
+                            showInfo(currentListing);
+                        });
+                });
+        }
+    });
 
     // Initialize the card stack
     initializeCards();
@@ -307,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function setupUserMenu() {
     const userMenu = document.querySelector('.user-menu');
     if (userMenu) {
-        userMenu.addEventListener('click', function() {
+        userMenu.addEventListener('click', function () {
             const menu = document.createElement('div');
             menu.className = 'user-dropdown';
             menu.innerHTML = `
@@ -323,7 +360,7 @@ function setupUserMenu() {
                 <a href="/settings.html"><i class="fas fa-cog"></i> Settings</a>
                 <a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             `;
-            
+
             handleDropdownMenu(menu, userMenu);
         });
     }
@@ -336,20 +373,20 @@ function handleDropdownMenu(menu, userMenu) {
         existingDropdown.remove();
     } else {
         document.body.appendChild(menu);
-        
+
         // Position the dropdown
         const rect = userMenu.getBoundingClientRect();
         menu.style.position = 'absolute';
         menu.style.top = rect.bottom + 'px';
         menu.style.right = (window.innerWidth - rect.right) + 'px';
-        
+
         // Handle logout
-        document.getElementById('logout').addEventListener('click', function(e) {
+        document.getElementById('logout').addEventListener('click', function (e) {
             e.preventDefault();
             localStorage.removeItem('auth');
             window.location.href = '/login.html';
         });
-        
+
         // Close dropdown when clicking outside
         document.addEventListener('click', function closeDropdown(e) {
             if (!menu.contains(e.target) && !userMenu.contains(e.target)) {
@@ -362,30 +399,53 @@ function handleDropdownMenu(menu, userMenu) {
 
 function setupModalHandlers() {
     const modal = document.getElementById('info-modal');
-    
+
     document.querySelector('.close-modal').addEventListener('click', hideInfo);
     modal.addEventListener('click', (e) => {
         if (e.target === modal) hideInfo();
     });
 
     // Handle donation buttons
-    document.querySelectorAll('.donate-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const amount = btn.textContent;
-            if (amount === 'Custom') {
-                const customAmount = prompt('Enter custom amount:');
-                if (customAmount) {
-                    processDonation(Number(customAmount));
-                }
-            } else {
-                processDonation(Number(amount.replace('$', '')));
-            }
-        });
+    document.querySelector('.confirm-donation-btn')?.addEventListener('click', () => {
+        processDonation(50); // Simulating a $50 donation
     });
 }
 
-function showInfo() {
+function showInfo(listing) {
+    if (!listing) return;
+
     const modal = document.getElementById('info-modal');
+    modal.querySelector('h2').textContent = listing.title;
+    modal.querySelector('.story p').textContent = listing.description;
+
+    const modalBody = modal.querySelector('.modal-body');
+    // Inject donation section
+    const donationSection = `
+        <div class="donation-section" style="text-align: center; margin-top: 2rem;">
+            <h3>Direct Donation</h3>
+            <p>Scan the UPI QR code below to donate directly to this recipient.</p>
+            <div class="qr-container" style="margin: 1rem auto; width: 200px; height: 200px; background: #eee; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                ${listing.qrCode ? `<img src="${listing.qrCode}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i class="fas fa-qrcode" style="font-size: 4rem; color: #ccc;"></i>'}
+            </div>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;">After donating, please confirm below to update the request progress.</p>
+            <button class="btn btn-primary confirm-donation-btn" style="background: var(--primary-color); color: white; border: none; padding: 1rem 2rem; border-radius: 30px; font-weight: 600; cursor: pointer; width: 100%;">
+                <i class="fas fa-check-circle"></i> I've Donated
+            </button>
+        </div>
+    `;
+
+    // Remove old donation buttons if present
+    const oldButtons = modalBody.querySelector('.donation-buttons');
+    if (oldButtons) oldButtons.remove();
+
+    const existingSection = modalBody.querySelector('.donation-section');
+    if (existingSection) existingSection.remove();
+
+    modalBody.insertAdjacentHTML('beforeend', donationSection);
+
+    // Re-setup handlers for the new button
+    setupModalHandlers();
+
     modal.style.display = 'flex';
     setTimeout(() => {
         modal.classList.add('show');
@@ -418,8 +478,35 @@ function resetButtonOpacity() {
     });
 }
 
-function processDonation(amount) {
-    // In a real app, this would process the payment
-    alert(`Processing donation of $${amount}`);
-    hideInfo();
+async function processDonation(amount) {
+    const auth = JSON.parse(localStorage.getItem('auth') || '{}');
+    if (!currentListing) {
+        alert('Listing data not found.');
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/api/listings/${currentListing.id}/donate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                donorId: auth.user.email,
+                amount: amount,
+                timestamp: new Date().toISOString()
+            })
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            alert(`Thank you for your donation! The request progress is now ${data.progress}%.`);
+            hideInfo();
+            // Refresh cards to show updated progress
+            initializeCards();
+        } else {
+            alert('Failed to confirm donation. Please try again.');
+        }
+    } catch (e) {
+        console.error(e);
+        alert('Error connecting to server.');
+    }
 } 

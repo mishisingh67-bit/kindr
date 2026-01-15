@@ -1,19 +1,119 @@
 {
-    "users": [
+  "users": [
+    {
+      "email": "admin@kindr.com",
+      "password": "admin",
+      "role": "admin",
+      "firstName": "Admin",
+      "lastName": "User"
+    },
+    {
+      "email": "donor@kindr.com",
+      "password": "donor",
+      "role": "donor",
+      "firstName": "Donor",
+      "lastName": "User"
+    },
+    {
+      "role": "recipient",
+      "email": "testrec@gmail.com",
+      "password": "testrec",
+      "firstName": "Mishi",
+      "lastName": "Singh",
+      "phone": "123456"
+    },
+    {
+      "role": "donor",
+      "email": "testdon@gmail.com",
+      "password": "testdon",
+      "firstName": "Sana",
+      "lastName": "Singh",
+      "phone": "7896541258"
+    }
+  ],
+  "listings": [
+    {
+      "message": "New Request",
+      "recipientId": "test@example.com",
+      "title": "Test Request",
+      "description": "This is a test request",
+      "category": "Education",
+      "urgency": "High",
+      "location": "Test City",
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "documents": [],
+      "qrCode": null,
+      "id": "5f2f79f4-022d-4cef-82c5-78f4f3671bc0",
+      "status": "rejected",
+      "donors": [],
+      "progress": 10,
+      "swipedBy": [
+        "testdon@gmail.com"
+      ],
+      "donations": [
         {
-            "email": "admin@kindr.com",
-            "password": "admin",
-            "role": "admin",
-            "firstName": "Admin",
-            "lastName": "User"
+          "donorId": "testdon2@gmail.com",
+          "amount": 50,
+          "timestamp": "2026-01-15T09:30:00Z"
+        }
+      ]
+    },
+    {
+      "message": "New Request",
+      "recipientId": "test@example.com",
+      "title": "Test Request",
+      "description": "This is a test request",
+      "category": "Education",
+      "urgency": "High",
+      "location": "Test City",
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "documents": [],
+      "qrCode": null,
+      "id": "b11d09b1-0d32-46b6-a700-4300d358c684",
+      "status": "rejected",
+      "donors": [],
+      "progress": 10,
+      "swipedBy": [
+        "testdon@gmail.com"
+      ],
+      "donations": [
+        {
+          "donorId": "testdon@gmail.com",
+          "amount": 50,
+          "timestamp": "2026-01-15T04:18:19.198Z"
+        }
+      ]
+    },
+    {
+      "message": "New Request",
+      "recipientId": "testrec@gmail.com",
+      "title": "kjhguhui",
+      "description": "lkjklhil",
+      "category": "Education",
+      "urgency": "Low",
+      "location": "kjhioh",
+      "image": "https://via.placeholder.com/400x200",
+      "documents": [],
+      "qrCode": null,
+      "status": "active",
+      "id": "f382cfd9-bd1d-43c9-9d33-60b140527393",
+      "donors": [],
+      "progress": 20,
+      "swipedBy": [
+        "testdon@gmail.com"
+      ],
+      "donations": [
+        {
+          "donorId": "testdon@gmail.com",
+          "amount": 50,
+          "timestamp": "2026-01-15T04:12:57.142Z"
         },
         {
-            "email": "donor@kindr.com",
-            "password": "donor",
-            "role": "donor",
-            "firstName": "Donor",
-            "lastName": "User"
+          "donorId": "testdon@gmail.com",
+          "amount": 50,
+          "timestamp": "2026-01-15T04:19:44.726Z"
         }
-    ],
-    "listings": []
+      ]
+    }
+  ]
 }

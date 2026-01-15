@@ -30,6 +30,7 @@ def test_create_listing():
             
     except urllib.error.URLError as e:
         print(f"ERROR: Could not connect to server. {e}")
+        print("\n!!! HINT: Make sure to run 'start_server.bat' to start the backend server! !!!\n")
     except Exception as e:
         print(f"ERROR: {e}")
 

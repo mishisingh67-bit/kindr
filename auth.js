@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
             roleOptions.forEach(opt => opt.classList.remove('active'));
             option.classList.add('active');
             selectedRole = option.dataset.role;
+
+            // Auto-advance for signup form
+            if (!isLoginForm) {
+                goToStep('name');
+            }
         });
     });
 
@@ -97,6 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        // Validate final step before submitting
+        if (!isLoginForm && !validateCurrentStep()) {
+            return;
+        }
+
         const formData = {
             role: selectedRole,
             email: document.getElementById('email')?.value,
@@ -110,7 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const endpoint = isLoginForm ? '/api/auth/login' : '/api/auth/signup';
+            const BASE_URL = 'http://127.0.0.1:8000';
+            const endpoint = isLoginForm ? `${BASE_URL}/api/auth/login` : `${BASE_URL}/api/auth/signup`;
 
             const response = await fetch(endpoint, {
                 method: 'POST',

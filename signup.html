@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kindr - Sign Up</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="auth-styles.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
 </head>
+
 <body class="auth-body">
   <div class="auth-container">
     <div class="auth-box">
@@ -27,7 +24,7 @@
         <p>Join our community and make a difference</p>
       </div>
 
-      <form id="signupForm">
+      <form id="signupForm" novalidate>
         <!-- Step 1: Role Selection -->
         <div id="step-role" class="form-step active">
           <h3>I want to...</h3>
@@ -67,11 +64,7 @@
               <input type="text" id="lastName" required />
             </div>
           </div>
-          <button
-            type="button"
-            class="auth-button next-button"
-            data-next="contact"
-          >
+          <button type="button" class="auth-button next-button" data-next="contact">
             Continue
           </button>
         </div>
@@ -92,11 +85,7 @@
             <label for="phone">Phone Number</label>
             <input type="tel" id="phone" required />
           </div>
-          <button
-            type="button"
-            class="auth-button next-button"
-            data-next="password"
-          >
+          <button type="button" class="auth-button next-button" data-next="password">
             Continue
           </button>
         </div>
@@ -126,10 +115,8 @@
           <div class="form-group terms">
             <label class="checkbox-label">
               <input type="checkbox" id="terms" required />
-              <span
-                >I agree to the <a href="#">Terms of Service</a> and
-                <a href="#">Privacy Policy</a></span
-              >
+              <span>I agree to the <a href="#">Terms of Service</a> and
+                <a href="#">Privacy Policy</a></span>
             </label>
           </div>
           <button type="submit" class="auth-button">Create Account</button>
@@ -156,111 +143,7 @@
     </div>
   </div>
 
-  <script>
-    // Handle multi-step form
-    const steps = document.querySelectorAll(".form-step");
-    const nextButtons = document.querySelectorAll(".next-button");
-    const backButtons = document.querySelectorAll(".back-button");
-    let selectedRole = "";
-
-    // Role selection
-    document.querySelectorAll(".role-option").forEach((option) => {
-      option.addEventListener("click", () => {
-        selectedRole = option.dataset.role;
-        document
-          .querySelectorAll(".role-option")
-          .forEach((el) => el.classList.remove("selected"));
-        option.classList.add("selected");
-
-        steps.forEach((s) => s.classList.remove("active"));
-        document.getElementById("step-name").classList.add("active");
-      });
-    });
-
-    nextButtons.forEach((btn) =>
-      btn.addEventListener("click", () => {
-        const nextId = "step-" + btn.dataset.next;
-        steps.forEach((s) => s.classList.remove("active"));
-        document.getElementById(nextId).classList.add("active");
-      })
-    );
-
-    backButtons.forEach((btn) =>
-      btn.addEventListener("click", () => {
-        const stepId = "step-" + btn.dataset.step;
-        steps.forEach((s) => s.classList.remove("active"));
-        document.getElementById(stepId).classList.add("active");
-      })
-    );
-
-    // Password toggle
-    document.querySelectorAll(".toggle-password").forEach((icon) => {
-      icon.addEventListener("click", () => {
-        const input = icon.previousElementSibling;
-        input.type = input.type === "password" ? "text" : "password";
-        icon.classList.toggle("fa-eye-slash");
-      });
-    });
-
-    // Handle form submission
-    document
-      .getElementById("signupForm")
-      .addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const firstName = document.getElementById("firstName").value.trim();
-        const lastName = document.getElementById("lastName").value.trim();
-        const email = document.getElementById("email").value.trim().toLowerCase();
-        const phone = document.getElementById("phone").value.trim();
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
-
-        if (!selectedRole) {
-          alert("Please select a role to continue.");
-          return;
-        }
-        if (password !== confirmPassword) {
-          alert("Passwords do not match!");
-          return;
-        }
-
-        const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-        if (users.find((u) => u.email === email)) {
-          alert("Email already registered. Please log in instead.");
-          window.location.href = "login.html";
-          return;
-        }
-
-        const newUser = {
-          id: Date.now(),
-          role: selectedRole,
-          firstName,
-          lastName,
-          email,
-          phone,
-          password,
-        };
-
-        users.push(newUser);
-        localStorage.setItem("users", JSON.stringify(users));
-
-        // Log them in automatically
-        localStorage.setItem(
-          "auth",
-          JSON.stringify({
-            isAuthenticated: true,
-            user: newUser,
-          })
-        );
-
-        // Redirect based on role
-        if (selectedRole === "donor") {
-          window.location.href = "donor-dashboard.html";
-        } else {
-          window.location.href = "recipient-dashboard.html";
-        }
-      });
-  </script>
+  <script src="auth.js"></script>
 </body>
+
 </html>
