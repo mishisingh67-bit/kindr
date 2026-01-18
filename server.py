@@ -1,5 +1,6 @@
 import http.server
 import socketserver
+from socketserver import ThreadingMixIn
 import os
 import json
 import uuid
@@ -316,13 +317,16 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(str(e).encode('utf-8'))
 
+class ThreadingTCPServer(ThreadingMixIn, socketserver.TCPServer):
+    pass
+
 def run_server(port=8000):
     try:
         handler = MyHttpRequestHandler
         # Allow reusing address to avoid "Address already in use" errors on restart
         socketserver.TCPServer.allow_reuse_address = True
-        with socketserver.TCPServer(("", port), handler) as httpd:
-            print(f"Server started at http://localhost:{port} (v2 - Debug Mode)")
+        with ThreadingTCPServer(("", port), handler) as httpd:
+            print(f"Server started at http://localhost:{port} (v3 - Multi-threaded)")
             httpd.serve_forever()
     except OSError as e:
         if e.errno == 98 or e.errno == 10048:
